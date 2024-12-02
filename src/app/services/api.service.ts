@@ -7,8 +7,6 @@ export class ApiService {
 
   constructor() { }
 
-
-
   setJWT(token: string){
     localStorage.setItem('jwt', token);
   }

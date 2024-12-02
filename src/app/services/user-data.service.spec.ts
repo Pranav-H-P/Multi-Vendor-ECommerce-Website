@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserDataService } from './user-data-service.service';
+import { UserDataService } from './user-data.service';
 
-describe('UserDataServiceService', () => {
+describe('UserDataService', () => {
   let service: UserDataService;
 
   beforeEach(() => {

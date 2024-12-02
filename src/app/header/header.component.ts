@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { UserDataService } from '../services/user-data.service';
 
 @Component({
   selector: 'app-header',
@@ -9,4 +10,10 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+
+  userData = Inject(UserDataService);
+  
+  constructor(){
+
+  }
 }
