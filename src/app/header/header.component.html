@@ -7,26 +7,82 @@
         <p class="text-gray-300 font-bebas text-3xl medium:text-4xl mx-auto">Strength and Steel</p>
 
     </div>
+    
     <hr class="border-t-2 border-red-500 small:hidden">
-    <div class="flex justify-center medium:justify-between items-center gap-2">
-        <input class="p-1 w-72 text-lg font-bebas placeholder-gray-50/25 rounded-md text-gray-300 bg-slate-800 focus:outline-none border-transparent border-2 focus:border-slate-600 focus:border-2" placeholder="Search" type="text" >
-        <button class="font-bebas text-xl text-gray-300 p-2 hover:text-gray-100">Search</button>
+
+
+    <div class="flex justify-center medium:justify-between items-center extraSmall:gap-2">
+        
+        <div class="relative">
+            <input (click)="openSearchBox($event)" class="p-1 w-56 extraSmall:w-72 text-lg font-bebas 
+            placeholder-gray-50/25 rounded-md text-gray-300 bg-slate-800 focus:outline-none 
+            border-transparent border-2 focus:border-slate-600 focus:border-2" placeholder="Search" type="text" 
+            [(ngModel)] = "searchTerm" (input)="preFetch()">
+        
+            <div (click)="$event.stopPropagation()" class="absolute top-12 transition duration-300 bg-slate-800 shadow-2xl z-20 
+            border-0 border-t-4 
+            border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-10 py-5
+            max-h-96 overflow-y-scroll"
+            [class.opacity-0]="!expandSearch" [class.pointer-events-none]="!expandSearch">
+        
+            @for (item of searchPreviews; track $index) {
+
+                <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item}}</p>
+
+                @if ($index != searchPreviews.length - 1) {
+                    <hr class="border-t-2 border border-red-500">
+                }
+
+            }
+            
+    
+        </div>
+
+        
+        </div>
+
+        <button (click)="search($event)" class="font-bebas text-xl text-gray-300 p-2 hover:text-gray-100">Search</button>
+
+        
     </div>
+
+
+
     <!--add box that shows preview items when typed-->
+
+
     <div class="justify-between items-center gap-4 hidden medium:flex">
         
         <div class="flex relative">
             <img (click)="toggleCart($event)" src="../../assets/icons/bag.png" class="h-auto w-12 relative z-19"> 
             
         
-            <div (click)="$event.stopPropagation()" class="absolute top-16 -left-20 transition duration-300 bg-slate-800 shadow-2xl z-20 
+            <div (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition duration-300 bg-slate-800 shadow-2xl z-20 
             border-0 border-t-4 
-        border-red-700 flex-col min-w-40 h-auto rounded-xl justify-between p-10"
+        border-red-700 flex flex-col w-64 h-auto rounded-xl justify-between p-5"
         [class.opacity-0]="!expandCart" [class.pointer-events-none]="!expandCart">
     
-                <p  class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
-                <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
-                <p  class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
+                <p  class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
+                
+                @for (item of cartPreviews; track $index) {
+
+                    <div class="flex justify-between">
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">{{item[0]}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item[1]}}*{{item[2]}}</p>
+                    </div>
+    
+                    <hr class="border-t-2 border border-red-500">
+                    
+    
+                }
+                @if (cartPreviews.length != 0) {
+                    <div class="flex justify-between">
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">Total:</p>
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{cartSum}}</p>
+                    </div>
+                    
+                }
+                
     
             </div>
             
@@ -38,18 +94,19 @@
             
                 <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition duration-300 bg-slate-800 shadow-2xl z-20 
                 border-0 border-t-4 
-            border-red-700 flex-col min-w-40 h-auto rounded-xl justify-between p-10"
+            border-red-700 flex flex-col min-w-40 h-auto rounded-xl justify-between p-10 py-5"
             [class.opacity-0]="!expandProfile" [class.pointer-events-none]="!expandProfile">
         
-                    <p  class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
+                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
                     <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
-                    <p  class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
+                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
+                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
         
                 </div>
                 
             
         </div>
-        @if (expandProfile || expandCart) {
+        @if (expandProfile || expandCart || expandSearch) {
             <div (click)="closePopUps()" class="fixed inset-x-0 top-24 z-10 h-[100vh] w-auto"></div>
         }
         
