@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+import { CartType } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +9,31 @@ export class ApiService {
   constructor() { }
 
 
-  dummyCartList = [
-    ["item1" , 100, 1],
-    ["dumbell", 400, 4],
-    ["item3", 50, 4]
-  ];
-  dummyItemList = ["item1", "testing", "item2", "barbell", "dumbell", "item3"];
+  dummyCartList = signal<CartType[]>([
+    {userId:1231231,
+      productId: 412341,
+      productName: "dummy",
+      quantity: 2,
+      price: 100,
+      dateAdded: new Date()
+    },
+    {userId:1231231,
+      productId: 412341,
+      productName: "dummy",
+      quantity: 2,
+      price: 100,
+      dateAdded: new Date()
+    },
+    {userId:1231231,
+      productId: 412341,
+      productName: "dummy",
+      quantity: 2,
+      price: 100,
+      dateAdded: new Date()
+    }
+  ]);
+
+  dummyItemList = signal(["item1", "testing", "item2", "barbell", "dumbell", "item3"]);
 
   setJWT(token: string){
     localStorage.setItem('jwt', token);
@@ -23,7 +43,7 @@ export class ApiService {
   }
 
   getNSearchResults(itemName: string, n: number){
-    const matchingItems = this.dummyItemList.filter(item => 
+    const matchingItems = this.dummyItemList().filter(item => 
       item.toLowerCase().includes(itemName)
     )
     return matchingItems.slice(0, n);
@@ -36,7 +56,7 @@ export class ApiService {
 
   }
 
-  getCart(){
+  getCartPreview(){
     return this.dummyCartList;
   }
 

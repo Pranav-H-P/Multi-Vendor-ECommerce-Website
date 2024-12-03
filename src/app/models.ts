@@ -15,13 +15,15 @@ export interface RegisterRequest{
     password: string;
     role: UserRole;
     email: string;
-    phoneNumber: Number;
+    phonenumber: number;
     address: string;
 }
 
-export interface CartType{
-    userId: Number;
-    productId: Number;
-    quantity: Number;
+export interface CartType{ // for data retrieval from api
+    userId: number;
+    productId: number;
+    productName: string;
+    quantity: number;
+    price: number;
     dateAdded: Date;
 }

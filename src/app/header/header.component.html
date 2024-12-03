@@ -2,7 +2,34 @@
     
     <div class="flex medium:justify-between items-center gap-2">
         
-        <img src="../../assets/icons/hamburgermenu.png" class="h-auto w-12 medium:hidden">
+        <div class="flex relative medium:hidden p-0 m-0">
+            
+            <img (click)="openHamburger()" src="../../assets/icons/hamburgermenu.png" class="h-auto w-12">
+
+            <div class="fixed inset-y-0 left-0 z-50 transition-all duration-200 h-[100vh] w-[60vw] bg-slate-700
+            flex flex-col gap-4 p-2 pl-6 py-10"
+            [class.opacity-0]="!expandHamburger" [class.pointer-events-none]="!expandHamburger">
+
+                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
+                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Profile</p>
+                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
+                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
+                
+                @if (userData.userName().length != 0) {
+                    <p class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
+                }
+                
+
+            </div>
+
+            <div (click)="closeHamburger()" class="fixed inset-0 z-40 transition-all duration-200 bg-black/50"
+            [class.opacity-0]="!expandHamburger" [class.pointer-events-none]="!expandHamburger">
+
+            </div>
+
+        </div>
+
+
         <img src="../../assets/icons/plates.png" class="h-auto w-12 hidden medium:block">
         <p class="text-gray-300 font-bebas text-3xl medium:text-4xl mx-auto">Strength and Steel</p>
 
@@ -19,7 +46,7 @@
             border-transparent border-2 focus:border-slate-600 focus:border-2" placeholder="Search" type="text" 
             [(ngModel)] = "searchTerm" (input)="preFetch()">
         
-            <div (click)="$event.stopPropagation()" class="absolute top-12 transition duration-300 bg-slate-800 shadow-2xl z-20 
+            <div (click)="$event.stopPropagation()" class="absolute top-12 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
             border-0 border-t-4 
             border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-10 py-5
             max-h-96 overflow-y-scroll"
@@ -54,28 +81,37 @@
     <div class="justify-between items-center gap-4 hidden medium:flex">
         
         <div class="flex relative">
-            <img (click)="toggleCart($event)" src="../../assets/icons/bag.png" class="h-auto w-12 relative z-19"> 
+            <img (click)="toggleCart($event)" src="../../assets/icons/bag.png" class="h-auto w-12 relative z-20"> 
             
+            @if (apiService.getCartPreview()().length > 0) {
+                <div class="absolute rounded-full bg-yellow-300 h-5 w-5 flex justify-center content-center z-30">
+                    <p class="font-bebas text-sm">{{apiService.getCartPreview()().length}}</p>
+                </div>
+                
+            }
+                
         
-            <div (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition duration-300 bg-slate-800 shadow-2xl z-20 
+            <div (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
             border-0 border-t-4 
         border-red-700 flex flex-col w-64 h-auto rounded-xl justify-between p-5"
         [class.opacity-0]="!expandCart" [class.pointer-events-none]="!expandCart">
     
                 <p  class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
                 
-                @for (item of cartPreviews; track $index) {
+                @for (item of apiService.getCartPreview()(); track $index) {
 
                     <div class="flex justify-between">
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">{{item[0]}}</p>
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item[1]}}*{{item[2]}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">{{item.productName}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item.price}}*{{item.quantity}}</p>
                     </div>
     
                     <hr class="border-t-2 border border-red-500">
                     
     
+                }@empty {
+                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Empty!</p>
                 }
-                @if (cartPreviews.length != 0) {
+                @if (apiService.getCartPreview()().length != 0) {
                     <div class="flex justify-between">
                         <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">Total:</p>
                         <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{cartSum}}</p>
@@ -89,10 +125,10 @@
         </div>
 
         <div class="flex relative">
-            <img (click)="toggleProfile($event)" src="../../assets/icons/user.png" class="h-auto w-14 relative z-19">
+            <img (click)="toggleProfile($event)" src="../../assets/icons/user.png" class="h-auto w-14 relative z-20">
 
             
-                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition duration-300 bg-slate-800 shadow-2xl z-20 
+                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
                 border-0 border-t-4 
             border-red-700 flex flex-col min-w-40 h-auto rounded-xl justify-between p-10 py-5"
             [class.opacity-0]="!expandProfile" [class.pointer-events-none]="!expandProfile">
@@ -100,14 +136,17 @@
                     <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
                     <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
                     <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
-                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
-        
+                    
+                    @if (userData.userName().length != 0) {
+                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
+                    }
+                    
                 </div>
                 
             
         </div>
         @if (expandProfile || expandCart || expandSearch) {
-            <div (click)="closePopUps()" class="fixed inset-x-0 top-24 z-10 h-[100vh] w-auto"></div>
+            <div (click)="closePopUps()" class="fixed inset-0 top-24 z-10 h-[100vh] w-auto"></div>
         }
         
     </div>

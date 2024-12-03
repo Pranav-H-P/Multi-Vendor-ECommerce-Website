@@ -19,27 +19,23 @@ export class HeaderComponent {
 
   expandProfile: boolean = false;
   expandCart: boolean = false;
-  expandSearch: boolean =false;
-
+  expandSearch: boolean = false;
+  expandHamburger: boolean = false;
 
   searchPreviews: string[] = [];
-  cartPreviews: any[][] = []; // make datatypes for this
 
-  cartSum = 0;
+  cartSum: number = 0;
 
-  constructor(){
-
-  }
 
   toggleCart(event: MouseEvent){
     event.stopPropagation();
 
     if (!this.expandCart){ // to be opened
-      this.cartPreviews = this.apiService.getCart();
+     ;
 
       this.cartSum = 0;
-      this.cartPreviews.forEach(element => {
-        this.cartSum += element[1]*element[2];
+      this.apiService.getCartPreview()().forEach(item => {
+        this.cartSum += item.price * item.quantity;
       });
 
     }
@@ -71,7 +67,11 @@ export class HeaderComponent {
   preFetch(){ // prefetches data and populates popup of search box
     if (this.searchTerm.trim().length > 0){
       this.searchPreviews = this.apiService.getSearchPreview(this.searchTerm.trim());
-      this.expandSearch = true;
+      if (this.searchPreviews.length > 0){
+        this.expandSearch = true;
+      }else{
+        this.expandSearch = false;
+      }
     }
   }
   openSearchBox(event: MouseEvent){
@@ -83,6 +83,13 @@ export class HeaderComponent {
     if (this.searchTerm.trim().length > 0){
       this.expandSearch = true;
     }
+  }
+  openHamburger(){
+    this.expandHamburger = true;
+  }
+
+  closeHamburger(){
+    this.expandHamburger = false;
   }
 
 
