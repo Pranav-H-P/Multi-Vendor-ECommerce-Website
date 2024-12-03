@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { CartType } from '../models';
+import { CartType, ProductType } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,24 @@ export class ApiService {
     }
   ]);
 
-  dummyItemList = signal(["item1", "testing", "item2", "barbell", "dumbell", "item3"]);
+  dummyItemList = signal<ProductType[]>([
+    {
+      productName:"testing",
+      productId: 12316623
+    },
+    {
+      productName:"testing2",
+      productId: 12312543
+    },
+    {
+      productName:"testing3",
+      productId: 12311323
+    },
+    {
+      productName:"testing4",
+      productId: 12312743
+    },
+  ]);
 
   setJWT(token: string){
     localStorage.setItem('jwt', token);
@@ -44,7 +61,7 @@ export class ApiService {
 
   getNSearchResults(itemName: string, n: number){
     const matchingItems = this.dummyItemList().filter(item => 
-      item.toLowerCase().includes(itemName)
+      item.productName.toLowerCase().includes(itemName)
     )
     return matchingItems.slice(0, n);
   }

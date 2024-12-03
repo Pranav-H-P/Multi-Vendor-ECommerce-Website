@@ -1,22 +1,24 @@
 <header (click)="closePopUps()" class="m-0 p-2 flex gap-2 medium:p-5 w-[100vw] flex-col small:flex-row bg-slate-950 justify-between content-center">
     
-    <div class="flex medium:justify-between items-center gap-2">
+    <!--Left most side header items, hamburger menu, logo-->
+
+    <div class="flex medium:justify-between items-center gap-2"> 
         
         <div class="flex relative medium:hidden p-0 m-0">
             
-            <img (click)="openHamburger()" src="../../assets/icons/hamburgermenu.png" class="h-auto w-12">
+            <img (click)="openHamburger()" src="../../assets/icons/hamburgermenu.png" class="h-auto w-12 cursor-pointer">
 
             <div class="fixed inset-y-0 left-0 z-50 transition-all duration-200 h-[100vh] w-[60vw] bg-slate-700
             flex flex-col gap-4 p-2 pl-6 py-10"
             [class.opacity-0]="!expandHamburger" [class.pointer-events-none]="!expandHamburger">
 
-                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
-                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Profile</p>
-                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
-                <p class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
+                <p [routerLink]="['/cart']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
+                <p [routerLink]="['/profile']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Profile</p>
+                <p [routerLink]="['/orders']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
+                <p [routerLink]="['/wishlist']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
                 
                 @if (userData.userName().length != 0) {
-                    <p class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
+                    <p (click) = "logout()" class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
                 }
                 
 
@@ -29,14 +31,19 @@
 
         </div>
 
-
-        <img src="../../assets/icons/plates.png" class="h-auto w-12 hidden medium:block">
-        <p class="text-gray-300 font-bebas text-3xl medium:text-4xl mx-auto">Strength and Steel</p>
+        <div [routerLink]="['/home']" class="p-0 m-0 flex gap-2 justify-between content-center cursor-pointer">
+            <img  src="../../assets/icons/plates.png" class="h-auto w-12 hidden medium:block">
+            <p class="mt-1 text-gray-300 font-bebas text-3xl medium:text-4xl mx-auto">Strength and Steel</p>
+        </div>
 
     </div>
     
+    
+
     <hr class="border-t-2 border-red-500 small:hidden">
 
+
+    <!--Center items, search bar-->
 
     <div class="flex justify-center medium:justify-between items-center extraSmall:gap-2">
         
@@ -48,16 +55,16 @@
         
             <div (click)="$event.stopPropagation()" class="absolute top-12 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
             border-0 border-t-4 
-            border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-10 py-5
+            border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-1 py-5
             max-h-96 overflow-y-scroll"
             [class.opacity-0]="!expandSearch" [class.pointer-events-none]="!expandSearch">
         
             @for (item of searchPreviews; track $index) {
-
-                <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item}}</p>
+                
+                <p [routerLink]="['/product/'+item.productId]" class="px-5 py-1 w-auto cursor-pointer font-exo2 text-xl text-gray-300 hover:font-bold">{{item.productName}}</p>
 
                 @if ($index != searchPreviews.length - 1) {
-                    <hr class="border-t-2 border border-red-500">
+                    <hr class="mx-5 border-t-2 border border-red-500">
                 }
 
             }
@@ -75,7 +82,7 @@
 
 
 
-    <!--add box that shows preview items when typed-->
+    <!--Right side items, cart, profile-->
 
 
     <div class="justify-between items-center gap-4 hidden medium:flex">
@@ -91,18 +98,18 @@
             }
                 
         
-            <div (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
+            <div [routerLink]="['/cart']" (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
             border-0 border-t-4 
         border-red-700 flex flex-col w-64 h-auto rounded-xl justify-between p-5"
         [class.opacity-0]="!expandCart" [class.pointer-events-none]="!expandCart">
     
-                <p  class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
+                <p  class="font-exo2 text-3xl text-gray-300">Cart</p>
                 
                 @for (item of apiService.getCartPreview()(); track $index) {
 
                     <div class="flex justify-between">
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">{{item.productName}}</p>
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{item.price}}*{{item.quantity}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 truncate mr-3">{{item.productName}}</p>
+                        <p class="font-exo2 text-xl text-gray-300">{{item.price}}*{{item.quantity}}</p>
                     </div>
     
                     <hr class="border-t-2 border border-red-500">
@@ -113,8 +120,8 @@
                 }
                 @if (apiService.getCartPreview()().length != 0) {
                     <div class="flex justify-between">
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold truncate mr-3">Total:</p>
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">{{cartSum}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 truncate mr-3">Total:</p>
+                        <p class="font-exo2 text-xl text-gray-300">{{cartSum}}</p>
                     </div>
                     
                 }
@@ -133,14 +140,14 @@
             border-red-700 flex flex-col min-w-40 h-auto rounded-xl justify-between p-10 py-5"
             [class.opacity-0]="!expandProfile" [class.pointer-events-none]="!expandProfile">
         
-                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
-                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
-                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
+                    <p [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
+                    <p [routerLink]="['/orders']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
+                    <p [routerLink]="['/wishlist']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
                     
                     @if (userData.userName().length != 0) {
-                        <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
+                        <p (click)="logout()" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
                     }
-                    
+
                 </div>
                 
             

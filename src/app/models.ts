@@ -27,3 +27,8 @@ export interface CartType{ // for data retrieval from api
     price: number;
     dateAdded: Date;
 }
+
+export interface ProductType{
+    productName: string;
+    productId: number;
+}

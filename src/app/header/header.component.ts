@@ -2,30 +2,35 @@ import { Component, inject, Inject, signal } from '@angular/core';
 import { UserDataService } from '../services/user-data.service';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { ProductType } from '../models';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
 
 
-  searchTerm = "";
+  
   userData = inject(UserDataService);
   apiService = inject(ApiService);
+  router = inject(Router);
 
   expandProfile: boolean = false;
   expandCart: boolean = false;
   expandSearch: boolean = false;
   expandHamburger: boolean = false;
 
-  searchPreviews: string[] = [];
+  searchPreviews: ProductType[] = [];
 
   cartSum: number = 0;
 
+  searchTerm = "";
 
   toggleCart(event: MouseEvent){
     event.stopPropagation();
@@ -59,9 +64,14 @@ export class HeaderComponent {
   }
 
   search(event: MouseEvent){
+    
     event.stopPropagation();
     this.expandCart = false;
     this.expandProfile = false;
+    if (this.searchTerm.trim() !== ""){
+      this.router.navigate(['/search']);
+    }
+    
   }
 
   preFetch(){ // prefetches data and populates popup of search box
@@ -92,5 +102,11 @@ export class HeaderComponent {
     this.expandHamburger = false;
   }
 
+  logout(){ // add later
+
+  }
+
+
+  
 
 }
