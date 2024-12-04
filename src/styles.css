@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+Color scheme 
+slate-950 // main theme
+lighter slate for differentiation/layers
+grey-300  // text
+red-500
+
+*/
+
+
 @font-face {
     font-family: 'bebasneue';
     src: url('/assets/fonts/bebasneue/BebasNeue-Regular.ttf') format('truetype');

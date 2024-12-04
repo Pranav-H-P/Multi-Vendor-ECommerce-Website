@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
+import { UserDataService } from '../services/user-data.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-home-page',
@@ -11,4 +13,7 @@ import { FooterComponent } from "../footer/footer.component";
 })
 export class HomePageComponent {
 
+  userDataService = inject(UserDataService);
+  apiService = inject(ApiService);
+  
 }

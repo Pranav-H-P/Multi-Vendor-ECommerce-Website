@@ -1,80 +1,81 @@
-import { Injectable, signal } from '@angular/core';
-import { CartType, ProductType } from '../models';
+import { inject, Injectable, signal } from '@angular/core';
+import { CartItemDTO, ProductDTO, SearchCriteriaDTO } from '../models';
+import { LocalStorageService } from './local-storage.service';
+import { UserDataService } from './user-data.service';
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
+
+  backendURL:string = "http://localhost:8080/api/"
+
+  http = inject(HttpClient)
+  localStorageService = inject(LocalStorageService)
+  userDataService = inject(UserDataService)
+
+
   constructor() { }
 
 
-  dummyCartList = signal<CartType[]>([
-    {userId:1231231,
-      productId: 412341,
-      productName: "dummy",
-      quantity: 2,
-      price: 100,
-      dateAdded: new Date()
-    },
-    {userId:1231231,
-      productId: 412341,
-      productName: "dummy",
-      quantity: 2,
-      price: 100,
-      dateAdded: new Date()
-    },
-    {userId:1231231,
-      productId: 412341,
-      productName: "dummy",
-      quantity: 2,
-      price: 100,
-      dateAdded: new Date()
-    }
-  ]);
+  cartList = signal<CartItemDTO[]>([]);
 
-  dummyItemList = signal<ProductType[]>([
-    {
-      productName:"testing",
-      productId: 12316623
-    },
-    {
-      productName:"testing2",
-      productId: 12312543
-    },
-    {
-      productName:"testing3",
-      productId: 12311323
-    },
-    {
-      productName:"testing4",
-      productId: 12312743
-    },
-  ]);
+  searchList = signal<ProductDTO[]>([]);
+  
+  currentProductImages = signal<string[]>([]);
 
-  setJWT(token: string){
-    localStorage.setItem('jwt', token);
-  }
-  getJWT(){
-    const jwt = localStorage.getItem('jwt'); // stored just as a string
+  // image related methods
+  getProductImageList(id: number){
+    console.log(id);
+    this.http.get<string[]>(this.backendURL + 'images/product/' + id.toString())
+      .subscribe({
+        next: (response) => {
+          this.currentProductImages.set(response.sort());
+        },
+        error: (error) => {
+          console.log("Image for product not found!", error);
+        }
+      });
   }
 
-  getNSearchResults(itemName: string, n: number){
-    const matchingItems = this.dummyItemList().filter(item => 
-      item.productName.toLowerCase().includes(itemName)
-    )
-    return matchingItems.slice(0, n);
+  // product related methods
+
+  searchProducts(criteria: SearchCriteriaDTO){
+    this.http.post<ProductDTO[]>(this.backendURL + 'product/search', criteria)
+      .subscribe({
+        next: (response) => {
+          this.searchList.set(response);
+        },
+        error: (error) => {
+          this.searchList.set([]);
+        }
+      });
   }
 
-  getSearchPreview(itemName: string){
+  loadSearchPreview(itemName: string){ // for homebar search
 
-    const lowerCaseItem = itemName.toLowerCase()
-    return this.getNSearchResults(lowerCaseItem, 5);
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: itemName,
+      perPage: 6
+    };
+    this.searchProducts(criteria)
+  }
+
+  loadSearchResults(){
 
   }
 
-  getCartPreview(){
-    return this.dummyCartList;
+  getProductData(id: number): Observable<ProductDTO | null> {
+    return this.http.get<ProductDTO>(this.backendURL + 'product/' + id.toString())
+    .pipe(
+      catchError((error) => {
+        console.log("Product not found", error);
+        return of(null);
+      })
+    );
   }
 
 }

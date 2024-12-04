@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { CartPageComponent } from './cart-page/cart-page.component';
+import { OrderPageComponent } from './order-page/order-page.component';
+import { WishlistPageComponent } from './wishlist-page/wishlist-page.component';
+import { ProductPageComponent } from './product-page/product-page.component';
 
 export const routes: Routes = [
     {
@@ -10,6 +15,26 @@ export const routes: Routes = [
     {
         path: "home",
         component: HomePageComponent
+    },
+    {
+        path: "login",
+        component: LoginPageComponent
+    },
+    {
+        path: "cart",
+        component: CartPageComponent
+    },
+    {
+        path: "order",
+        component: OrderPageComponent
+    },
+    {
+        path: "wishlist",
+        component: WishlistPageComponent
+    },
+    {
+        path: "product/:id",
+        component: ProductPageComponent
     },
     {
         path: "**",

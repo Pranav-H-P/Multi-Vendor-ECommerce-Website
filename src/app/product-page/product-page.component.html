@@ -1,0 +1,37 @@
+
+<!--
+<p>You are looking at {{productId}}</p>
+@for (item of apiService.currentProductImages(); track i; let i = $index) {
+    <img [src]="apiService.backendURL + 'images/product/' + productId + '/' + apiService.currentProductImages()[i]" alt="image {{i}}">
+    
+}-->
+
+<section class="min-h-[90vh] font-exo2 flex flex-col p-5">
+
+
+    <div class="flex justify-between">
+        
+        <div class="flex justify-around">
+            <div class="w-96 h-96 overflow-clip relative flex justify-center content-center">
+
+                @if (apiService.currentProductImages().length > 0) {
+                    <button class="absolute rounded-full w-14 h-14 bg-slate-700/50 text-6xl font-bebas
+                    right-0 top-[40%] hover:bg-slate-700/70" (click)="nextImg()">&gt;</button>
+
+                    <img [src]="productImageLink + apiService.currentProductImages()[currImage]" alt="image {{currImage}}"
+                    class="w-auto h-auto rounded-xl">
+
+                    <button class="absolute rounded-full w-14 h-14 bg-slate-700/50 text-6xl font-bebas
+                    left-0 top-[40%] hover:bg-slate-700/70" (click)="prevImg()">&lt;</button>
+                }
+            </div>
+
+            <div>
+                <p>name: {{productData?.productName}}</p>
+            </div>
+        </div>
+        
+        
+    </div>
+
+</section>

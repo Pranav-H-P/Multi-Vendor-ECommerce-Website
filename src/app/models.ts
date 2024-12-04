@@ -1,25 +1,25 @@
-import { UserRole } from "./enums";
+import { SearchSortOrder, UserRole } from "./enums";
 
-export interface AuthRequest{
+export interface AuthRequestDTO{
     email: string;
     password: string;
 }
 
-export interface AuthResponse{
+export interface AuthResponseDTO{
     jwt: string;
     err: string;
 }
 
-export interface RegisterRequest{
+export interface RegisterDTO{
     name: string;
     password: string;
     role: UserRole;
     email: string;
-    phonenumber: number;
+    phoneNumber: number;
     address: string;
 }
 
-export interface CartType{ // for data retrieval from api
+export interface CartItemDTO{ 
     userId: number;
     productId: number;
     productName: string;
@@ -28,7 +28,24 @@ export interface CartType{ // for data retrieval from api
     dateAdded: Date;
 }
 
-export interface ProductType{
+export interface ProductDTO{
     productName: string;
+    vendorId: number;
     productId: number;
+    vendorName: string;
+    price: number;
+    description: string;
+    categoryId: number;
+}
+
+export interface SearchCriteriaDTO{
+    searchTerm: string;
+    vendor?: string;
+    category?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    priceOrder?: SearchSortOrder;
+    pageNumber?: number;
+    perPage?: number;
+    creationOrder?: SearchSortOrder;
 }

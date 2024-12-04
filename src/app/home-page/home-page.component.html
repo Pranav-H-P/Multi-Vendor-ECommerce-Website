@@ -1,3 +1,7 @@
-<app-header></app-header>
-<p class="min-h-[80vh]">home-page works!</p>
-<app-footer></app-footer>
+<section class="min-h-[90vh] font-exo2 flex flex-col p-5">
+
+    @if (userDataService.userName() !== "") {
+        <p class="text-4xl">Welcome {{userDataService.userName()}}!</p>
+    }
+
+</section>

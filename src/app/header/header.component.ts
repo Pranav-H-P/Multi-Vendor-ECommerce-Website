@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { ProductType } from '../models';
+import { ProductDTO } from '../models';
 
 @Component({
   selector: 'app-header',
@@ -26,8 +26,6 @@ export class HeaderComponent {
   expandSearch: boolean = false;
   expandHamburger: boolean = false;
 
-  searchPreviews: ProductType[] = [];
-
   cartSum: number = 0;
 
   searchTerm = "";
@@ -39,7 +37,7 @@ export class HeaderComponent {
      ;
 
       this.cartSum = 0;
-      this.apiService.getCartPreview()().forEach(item => {
+      this.apiService.cartList().forEach(item => {
         this.cartSum += item.price * item.quantity;
       });
 
@@ -76,8 +74,9 @@ export class HeaderComponent {
 
   preFetch(){ // prefetches data and populates popup of search box
     if (this.searchTerm.trim().length > 0){
-      this.searchPreviews = this.apiService.getSearchPreview(this.searchTerm.trim());
-      if (this.searchPreviews.length > 0){
+      this.apiService.loadSearchPreview(this.searchTerm.trim());
+      
+      if (this.apiService.searchList().length > 0){
         this.expandSearch = true;
       }else{
         this.expandSearch = false;

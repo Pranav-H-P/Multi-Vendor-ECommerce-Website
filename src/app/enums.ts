@@ -3,3 +3,9 @@ export enum UserRole{
     VENDOR,
     CUSTOMER
 }
+
+export enum SearchSortOrder{
+    ASC,
+    DSC,
+    NONE
+}
