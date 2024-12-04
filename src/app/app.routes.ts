@@ -6,6 +6,7 @@ import { CartPageComponent } from './cart-page/cart-page.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { WishlistPageComponent } from './wishlist-page/wishlist-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
+import { VendorPageComponent } from './vendor-page/vendor-page.component';
 
 export const routes: Routes = [
     {
@@ -35,6 +36,10 @@ export const routes: Routes = [
     {
         path: "product/:id",
         component: ProductPageComponent
+    },
+    {
+        path: "vendor/:id",
+        component: VendorPageComponent
     },
     {
         path: "**",

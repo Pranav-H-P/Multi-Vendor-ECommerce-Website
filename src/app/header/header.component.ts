@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { ProductDTO } from '../models';
 
 @Component({
   selector: 'app-header',

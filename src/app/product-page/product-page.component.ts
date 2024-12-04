@@ -1,11 +1,12 @@
 import { Component, inject} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { ProductDTO } from '../models';
+
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [],
+  imports: [ RouterModule ],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css'
 })
@@ -30,13 +31,13 @@ export class ProductPageComponent{
     this.apiService.getProductData(this.productId).subscribe(product => {
       if (product) {
         this.productData = product;
-        console.log("ooo" + this.productData);
       } else {
         this.productData = null;
         this.router.navigate(['notfound']);
         
       }
     });
+    
   }
 
   nextImg(){
@@ -46,5 +47,18 @@ export class ProductPageComponent{
   prevImg(){
     this.currImage = (this.currImage - 1) % this.apiService.currentProductImages().length
   }
+
+  formatToIndianCurrency(value: number | undefined) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+  }
+
 
 }

@@ -9,3 +9,11 @@ export enum SearchSortOrder{
     DSC,
     NONE
 }
+
+export enum Rating{
+    HORRIBLE,
+    POOR,
+    SATISFACTORY,
+    GOOD,
+    EXCELLENT
+}

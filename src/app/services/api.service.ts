@@ -77,5 +77,15 @@ export class ApiService {
       })
     );
   }
+  // rating related methods
 
+  getAverageRating(productId: number): Observable<number | null> {
+    return this.http.get<number>(this.backendURL + '/' + productId.toString() + '/rating')
+    .pipe(
+      catchError((error) => {
+        console.log("Product not found", error);
+        return of(null);
+      })
+    );
+  }
 }
