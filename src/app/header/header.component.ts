@@ -67,6 +67,7 @@ export class HeaderComponent {
     this.expandProfile = false;
     if (this.searchTerm.trim() !== ""){
       this.router.navigate(['/search']);
+      this.expandSearch = false;
     }
     
   }
