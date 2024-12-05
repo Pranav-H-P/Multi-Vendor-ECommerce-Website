@@ -1,1 +1,19 @@
-<p>rating-stars works!</p>
+<div class="flex gap-2">
+    
+    @for (item of [].constructor(5); track $index) {
+        
+        
+        @if (useProductData && $index <= (productData()?.averageRating ?? 1) - 1) {
+            <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
+        
+        }@else if ($index <= (starEnum)) {
+            <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
+        }@else {
+            <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
+        }
+        
+            
+
+    }
+
+</div>

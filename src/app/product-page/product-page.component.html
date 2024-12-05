@@ -19,7 +19,8 @@
                     <button class="absolute rounded-full w-14 h-14 bg-slate-700/50 text-6xl font-bebas
                     right-0 top-[40%] hover:bg-slate-700/70 basis-1/2" (click)="nextImg()">&gt;</button>
 
-                    <img [src]="productImageLink + apiService.currentProductImages()[currImage]" alt="image {{currImage}}"
+                    <img [src]="productImageLink +
+                    productId() + '/' + apiService.currentProductImages()[currImage]" alt="image {{currImage}}"
                     class="w-auto h-auto rounded-xl">
 
                     <button class="absolute rounded-full w-14 h-14 bg-slate-700/50 text-6xl font-bebas
@@ -28,14 +29,21 @@
             </div>
 
             <div class="flex flex-col basis-1/3 gap-4">
-                <p class="font-bebas text-6xl">{{productData?.productName}}</p>
-                <p class="font-exo2 text-xl hover:text-black/70 cursor-pointer"
-                [routerLink]="['/vendor/' + productData?.vendorId]">{{productData?.vendorName}}</p>
-                <div class="flex"><!--add rating stars thing-->
-                    <p>{{productData?.averageRating?.toFixed(2)}}</p>
+                <p class="font-bebas text-6xl">{{productData()?.productName}}</p>
+                <div class="flex flex-col pl-5 pt-4 gap-4">
+                    <p class="font-exo2 text-xl hover:text-black/70 cursor-pointer"
+                    [routerLink]="['/vendor/' + productData()?.vendorId]">Sold by: {{productData()?.vendorName}}</p>
+                    
+                    <div class="flex gap-2 content-center"><!--add rating stars thing-->
+                        
+                        <app-rating-stars [useProductData]="true" [productData]="productData"></app-rating-stars>
+
+                        <p>{{productData()?.averageRating?.toFixed(2)}}</p>
+                    </div>
+                    
+                    <p class="font-bebas font-bold text-2xl">{{formatToIndianCurrency(productData()?.price)}}</p>
+                    <p class="">{{productData()?.description}}</p>
                 </div>
-                <p class="font-bebas font-bold text-2xl">{{formatToIndianCurrency(productData?.price)}}</p>
-                
             </div>
 
         </div>

@@ -29,7 +29,6 @@ export class ApiService {
 
   // image related methods
   getProductImageList(id: number){
-    console.log(id);
     this.http.get<string[]>(this.backendURL + 'images/product/' + id.toString())
       .subscribe({
         next: (response) => {

@@ -37,6 +37,8 @@ export interface ProductDTO{
     description: string;
     categoryId: number;
     averageRating: number;
+    sales: number;
+    stock: number;
 }
 
 export interface SearchCriteriaDTO{
@@ -49,6 +51,9 @@ export interface SearchCriteriaDTO{
     pageNumber?: number;
     perPage?: number;
     creationOrder?: SearchSortOrder;
+    ratingOrder?: SearchSortOrder;
+    salesOrder?: SearchSortOrder;
+    stockOrder?: SearchSortOrder;
 }
 
 export interface ReviewDTO{
@@ -61,7 +66,7 @@ export interface ReviewDTO{
     reviewDate: Date;
 }
 
-export interface ReviewCriteriaDTO{
+export interface ReviewCriteriaDTO{ // for retrieving reviews
     id: number;
     pageNumber: number;
     perPage: number;
