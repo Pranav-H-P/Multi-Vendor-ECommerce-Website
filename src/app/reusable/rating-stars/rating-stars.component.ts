@@ -14,8 +14,23 @@ export class RatingStarsComponent{
   @Input() productData = signal<ProductDTO|null>(null); // sometimes it is null due to request latency
   @Input() useProductData = false;
   @Input() starEnum : Rating = Rating.HORRIBLE;
+  @Input() modifiable = false;
 
-  finalCount = 0; // type errors, so I have to use another var
+
+  finalCount = 0; // zero indexed for compatibility with enum
+
+
+  onClicked(id: number){
+
+    if (this.finalCount == id){
+      this.finalCount = 0;
+    }else{
+      this.finalCount = id;
+    }
+
+    
+  }
+
 
 
 }

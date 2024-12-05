@@ -36,8 +36,10 @@
                     
                     <div class="flex gap-2 content-center"><!--add rating stars thing-->
                         
+                        <!--
                         <app-rating-stars [useProductData]="true" [productData]="productData"></app-rating-stars>
-
+                        -->
+                        <app-rating-stars [modifiable]="true"></app-rating-stars>
                         <p>{{productData()?.averageRating?.toFixed(2)}}</p>
                     </div>
                     
