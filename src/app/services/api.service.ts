@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { CartItemDTO, ProductDTO, SearchCriteriaDTO } from '../models';
+import { CartItemDTO, ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO } from '../models';
 import { LocalStorageService } from './local-storage.service';
 import { UserDataService } from './user-data.service';
 import { HttpClient } from '@angular/common/http';
@@ -76,6 +76,29 @@ export class ApiService {
       })
     );
   }
+
+  loadSimilar(product: any, perPage: number, pgNo: number) {
+
+    if (product === null || product === undefined){
+      return;
+    }
+
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: "",
+      perPage: perPage,
+      pageNumber: pgNo,
+      category: product.categoryName
+    };
+
+    return this.http.post<ProductDTO[]>(this.backendURL + 'product/search', criteria)
+    .pipe(
+      catchError((error) => {
+        console.log("Products not found", error);
+        return of(null);
+      })
+    );
+  }
+
   // rating related methods
 
   getAverageRating(productId: number): Observable<number | null> {
@@ -83,6 +106,24 @@ export class ApiService {
     .pipe(
       catchError((error) => {
         console.log("Product not found", error);
+        return of(null);
+      })
+    );
+  }
+
+  loadUserReviews(pId: number, perPage: number, pgNo: number) {
+
+
+    let criteria: ReviewCriteriaDTO = {
+      id: pId,
+      pageNumber: pgNo,
+      perPage: perPage
+    };
+
+    return this.http.post<ReviewDTO[]>(this.backendURL + 'product/review', criteria)
+    .pipe(
+      catchError((error) => {
+        console.log("Reviews not found", error);
         return of(null);
       })
     );

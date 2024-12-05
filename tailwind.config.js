@@ -10,7 +10,7 @@ module.exports = {
 
       'small': '640px',
       
-      'medium': '840px',
+      'medium': '850px',
 
       'large': '1040px',
       

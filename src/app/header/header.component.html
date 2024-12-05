@@ -116,7 +116,7 @@
                     
     
                 }@empty {
-                    <p class="font-exo2 text-xl text-gray-300 hover:font-bold">Empty!</p>
+                    <p class="font-exo2 text-xl text-gray-300">Empty!</p>
                 }
                 @if (apiService.cartList().length != 0) {
                     <div class="flex justify-between">
@@ -143,6 +143,7 @@
                     <p [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
                     <p [routerLink]="['/orders']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
                     <p [routerLink]="['/wishlist']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
+                    <p [routerLink]="['/support']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Support</p>
                     
                     @if (userData.userName().length != 0) {
                         <p (click)="logout()" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>

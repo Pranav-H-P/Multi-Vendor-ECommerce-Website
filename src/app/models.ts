@@ -39,6 +39,7 @@ export interface ProductDTO{
     averageRating: number;
     sales: number;
     stock: number;
+    categoryName:string;
 }
 
 export interface SearchCriteriaDTO{
