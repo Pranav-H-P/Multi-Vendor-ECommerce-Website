@@ -1,1 +1,8 @@
-<p>product-card works!</p>
+<div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 overflow-hidden transition-all hover:scale-90 " >
+    
+    <img [src]="apiService.backendURL + 'images/product/' +
+    productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
+    class="h-auto w-auto rounded-2xl object-cover"
+    
+    [routerLink]="'/product/' + productData.productId">
+</div>

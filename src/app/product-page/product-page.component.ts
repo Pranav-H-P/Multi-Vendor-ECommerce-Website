@@ -32,22 +32,35 @@ export class ProductPageComponent implements OnInit{
   productData = signal<ProductDTO | null>(null);
 
   similarPageNo = signal(0);
-  similarPerPage = signal(5);
+  similarPerPage = signal<number>(4);
 
   reviewPageNo = signal(0);
-  reviewPerPage = signal(6);
+  reviewPerPage = signal(5);
 
+  imageList = signal<string[]>([]);
   similarProducts = signal<ProductDTO[]>([]);
   userReviews = signal<ReviewDTO[]>([]);
 
-  private resizeObserver!: ResizeObserver;
+  productCartWidth = 160 + 100; // second number for margin of error
+
+  lastPageNo = -1; // when similar products were fetched last (to reduce no of calls)
+
+  resizeBreakpoints = [
+    
+
+    ,840//3
+    ,1020//5
+    ,1280//4
+  ];
 
   ngOnInit(){
     
-    this.productImageLink = this.apiService.backendURL + 'images/product/';
-    
     this.route.params.subscribe(params => {
+      console.log("init")    
+      this.productImageLink = this.apiService.backendURL + 'images/product/';
       this.productId.set(params['id']);
+      this.lastPageNo = -1;
+      this.similarPageNo.set(0);
       this.loadProductData();
       this.loadUserReviews();
       
@@ -55,12 +68,20 @@ export class ProductPageComponent implements OnInit{
     
   }
 
-  loadSimilarProducts(){
+  loadSimilarProducts(perPage: number){ 
+    
+    if (perPage == this.similarProducts().length && 
+        this.similarPageNo() == this.lastPageNo){
+      return
+    }
+
     this.apiService.loadSimilar(this.productData(),
-      this.similarPerPage(), this.similarPageNo())?.subscribe(pList => {
+      perPage, this.similarPageNo())?.subscribe(pList => {
 
       if (pList) {
         this.similarProducts.set(pList);
+        this.lastPageNo = this.similarPageNo();
+        console.log(pList);
         
       } else {
         this.similarProducts.set([]);
@@ -83,14 +104,22 @@ export class ProductPageComponent implements OnInit{
       });
   }
 
-  loadProductData(){
-    this.apiService.getProductImageList(this.productId());
+  loadImages(){
+    this.apiService.getProductImageList(this.productId()).subscribe(list =>{
+      if (list){
+        this.imageList.set(list);
+      }else{
+        this.imageList.set([]);
+      }
+    });
+  }
 
+  loadProductData(){
     this.apiService.getProductData(this.productId()).subscribe(product => {
       if (product) {
         this.productData.set(product);
-        this.loadSimilarProducts();
-
+        this.loadImages();
+        this.loadSimilarProducts(this.getPerPageCount());
       } else {
         this.productData.set(null);
         this.router.navigate(['notfound']);
@@ -99,13 +128,14 @@ export class ProductPageComponent implements OnInit{
     });
   }
   nextImg(){
-    this.currImage = (this.currImage + 1) % this.apiService.currentProductImages().length
+    this.currImage = (this.currImage + 1) % this.imageList().length
+    
   }
 
   prevImg(){
     this.currImage = (this.currImage - 1)
     if (this.currImage < 0){
-      this.currImage = this.apiService.currentProductImages().length - 1;
+      this.currImage = this.imageList().length - 1;
     }
   }
 
@@ -142,21 +172,35 @@ export class ProductPageComponent implements OnInit{
   nextProductPage(){
     if (this.similarProducts().length > 0){
       this.similarPageNo.update( value => value + 1);
-      this.loadSimilarProducts();
+      this.loadSimilarProducts(this.getPerPageCount());
     }
   }
   prevProductPage(){
     if (this.similarPageNo() > 0){
       this.similarPageNo.update(value => value - 1);
-      this.loadSimilarProducts();
+      this.loadSimilarProducts(this.getPerPageCount());
+    }
+    
+  }
+
+  getPerPageCount(){
+
+    if (window.innerWidth >= 1280){
+        return 5;
+    }else if (window.innerWidth >= 1020){
+        return 4;
+    }else if (window.innerWidth >= 850){
+        return 3;
+    }else{
+        return 6;
     }
     
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    // add pageination logic too
-    this.loadSimilarProducts();
+    
+    this.loadSimilarProducts(this.getPerPageCount());
   }
-
+  
 
 }

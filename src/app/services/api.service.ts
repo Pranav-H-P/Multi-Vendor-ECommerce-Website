@@ -24,20 +24,16 @@ export class ApiService {
   cartList = signal<CartItemDTO[]>([]);
 
   searchList = signal<ProductDTO[]>([]);
-  
-  currentProductImages = signal<string[]>([]);
 
   // image related methods
   getProductImageList(id: number){
-    this.http.get<string[]>(this.backendURL + 'images/product/' + id.toString())
-      .subscribe({
-        next: (response) => {
-          this.currentProductImages.set(response.sort());
-        },
-        error: (error) => {
-          console.log("Image for product not found!", error);
-        }
-      });
+    return this.http.get<string[]>(this.backendURL + 'images/product/' + id.toString())
+      .pipe(
+        catchError((error) => {
+          console.log("Images not found", error);
+          return of(null);
+        })
+    );
   }
 
   // product related methods
