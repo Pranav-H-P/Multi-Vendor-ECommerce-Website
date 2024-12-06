@@ -1,10 +1,13 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
+
+  localStorageService = inject(LocalStorageService);
 
   userId = signal(-1);
   userName = signal("");
@@ -13,6 +16,10 @@ export class UserDataService {
   userRole = signal<UserRole>(UserRole.CUSTOMER);
   userPhone = signal("");
 
-  constructor() { }
+  constructor() {
+    if (this.localStorageService.getJWT()){
+      // add logic to check if jwt is valid and if yes then retrieve user data
+    }
+  }
 
 }

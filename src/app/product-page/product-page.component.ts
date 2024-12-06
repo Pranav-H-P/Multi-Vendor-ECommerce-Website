@@ -8,13 +8,14 @@ import { ProductCardComponent } from '../reusable/product-card/product-card.comp
 import { SearchSortOrder } from '../enums';
 import { ReviewCardComponent } from "../reusable/review-card/review-card.component";
 import { NgClass } from '@angular/common';
+import { ToastComponent } from "../reusable/toast/toast.component";
 
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
   imports: [RouterModule, RatingStarsComponent, ProductCardComponent,
-    ReviewCardComponent, NgClass],
+    ReviewCardComponent, NgClass, ToastComponent],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css'
 })
@@ -53,6 +54,11 @@ export class ProductPageComponent implements OnInit{
   byDateText = ["Latest", "Oldest"]; // sort order text for date option
   byRatingText = ["Highest", "Lowest"]; // sort order text for date option
   orderText = this.byDateText;
+
+  toastDuration = 3000;
+  toastVisible = signal(false);
+  toastMessage = signal("Testing");
+  toastSuccess = signal(true);
 
   ngOnInit(){
     
@@ -184,7 +190,14 @@ export class ProductPageComponent implements OnInit{
 
   addToCart(){
     if (this.userService.userEmail() === ""){
-      this.router.navigate(['login']);
+      this.toastVisible.set(true);
+      this.toastMessage.set("Added to Cart!");
+      this.toastSuccess.set(true);
+      
+      setTimeout(() => {
+        this.toastVisible.set(false);
+        }, this.toastDuration);
+      //this.router.navigate(['login']);
     }else{
       // add cart api logic
     }

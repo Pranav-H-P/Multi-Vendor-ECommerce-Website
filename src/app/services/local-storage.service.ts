@@ -12,6 +12,12 @@ export class LocalStorageService {
   }
   getJWT(){
     const jwt = localStorage.getItem('jwt'); // stored just as a string
+    
+    if (jwt){
+      return jwt;
+    }else{
+      return null;
+    }
   }
 
 }

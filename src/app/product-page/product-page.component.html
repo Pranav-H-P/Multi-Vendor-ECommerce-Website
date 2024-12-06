@@ -5,6 +5,7 @@
     <img [src]="apiService.backendURL + 'images/product/' + productId + '/' + imageList()[i]" alt="image {{i}}">
     
 }-->
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
 
 <section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
 

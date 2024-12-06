@@ -81,3 +81,10 @@ export interface Vendor{
     approvalStatus: VendorApprovalStatus;
     joinDate: Date;
 }
+
+export interface Category{
+    id: number;
+    name: string;
+    description: string;
+    parentId: number;
+}

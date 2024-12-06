@@ -1,9 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO, Vendor } from '../models';
+import { Category, ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO, Vendor } from '../models';
 import { LocalStorageService } from './local-storage.service';
 import { UserDataService } from './user-data.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
+import { SearchSortOrder } from '../enums';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class ApiService {
     return this.searchProducts(criteria);
   }
 
-  getProductData(id: number): Observable<ProductDTO | null> { // get one ProductDTO by id, not searching
+  getProductData(id: number): Observable<ProductDTO | null> { // get one ProductDTO by id directly
     return this.http.get<ProductDTO>(this.backendURL + 'product/' + id.toString())
     .pipe(
       catchError((error) => {
@@ -86,6 +87,53 @@ export class ApiService {
     
   }
 
+  getLatest(perPage: number, pgNo: number): Observable<ProductDTO[] | null>{
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: "",
+      perPage: perPage,
+      pageNumber: pgNo,
+      creationOrder: SearchSortOrder.ASC
+    }
+
+    return this.searchProducts(criteria);
+
+  }
+
+  getLatestByVendor(vendorName: string, perPage: number, pgNo: number): Observable<ProductDTO[] | null>{
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: "",
+      perPage: perPage,
+      pageNumber: pgNo,
+      vendor: vendorName,
+      creationOrder: SearchSortOrder.ASC
+    }
+
+    return this.searchProducts(criteria);
+
+  }
+
+  getLatestByCategory(categoryName: string, perPage: number, pgNo: number): Observable<ProductDTO[] | null>{
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: "",
+      perPage: perPage,
+      pageNumber: pgNo,
+      category: categoryName,
+      creationOrder: SearchSortOrder.ASC
+    }
+
+    return this.searchProducts(criteria);
+  }
+
+  getAllCategories(){
+    return this.http.get<Category[]>(this.backendURL + 'product/category')
+    .pipe(
+      catchError((error) => {
+        console.log("Vendor not found", error);
+        return of(null);
+      })
+    );
+  }
+
   // Vendor public data related methods
 
   getVendorDetails(vendorId: number){
@@ -98,17 +146,8 @@ export class ApiService {
     );
   }
 
-  getLatestByVendor(vendorName: string, perPage: number, pgNo: number): Observable<ProductDTO[] | null>{
-    let criteria: SearchCriteriaDTO = {
-      searchTerm: "",
-      perPage: perPage,
-      pageNumber: pgNo,
-      vendor: vendorName
-    }
+  
 
-    return this.searchProducts(criteria);
-
-  }
 
   // rating related methods
 
