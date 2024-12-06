@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal} from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import { ProductDTO } from '../../models';
 import { ApiService } from '../../services/api.service';
 import { RouterLink } from '@angular/router';
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css'
 })
-export class ProductCardComponent implements OnInit{
+export class ProductCardComponent implements OnInit,OnChanges{
 
   @Input() productData!: ProductDTO;
   @Input() bottomText = true; // text and stuff will be at the bottom for product page cards etc, side for search
@@ -24,6 +24,12 @@ export class ProductCardComponent implements OnInit{
   ngOnInit(): void {
     this.loadImages();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['productData']) {
+      this.loadImages(); // Reload images when productData changes
+    }
+  }
+
 
   loadImages(){
 
