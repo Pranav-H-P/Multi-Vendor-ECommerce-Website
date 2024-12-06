@@ -1,4 +1,4 @@
-import { Rating, SearchSortOrder, UserRole } from "./enums";
+import { Rating, SearchSortOrder, UserRole, VendorApprovalStatus } from "./enums";
 
 export interface AuthRequestDTO{
     email: string;
@@ -21,10 +21,8 @@ export interface RegisterDTO{
 
 export interface CartItemDTO{ 
     userId: number;
-    productId: number;
-    productName: string;
+    product: ProductDTO;
     quantity: number;
-    price: number;
     dateAdded: Date;
 }
 
@@ -73,4 +71,13 @@ export interface ReviewCriteriaDTO{ // for retrieving reviews
     perPage: number;
     timeOrder?: SearchSortOrder;
     ratingOrder?: SearchSortOrder;
+}
+
+export interface Vendor{
+    id: number;
+    name: string;
+    contactDetails: string;
+    description: string;
+    approvalStatus: VendorApprovalStatus;
+    joinDate: Date;
 }

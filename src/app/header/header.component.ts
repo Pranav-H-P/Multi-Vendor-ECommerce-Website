@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { CartItemDTO, ProductDTO } from '../models';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,9 @@ export class HeaderComponent {
 
   searchTerm = "";
 
+  searchList = signal<ProductDTO[]>([]);
+  cartList = signal<CartItemDTO[]>([]);
+
   toggleCart(event: MouseEvent){
     event.stopPropagation();
 
@@ -36,8 +40,8 @@ export class HeaderComponent {
      ;
 
       this.cartSum = 0;
-      this.apiService.cartList().forEach(item => {
-        this.cartSum += item.price * item.quantity;
+      this.cartList().forEach(item => {
+        this.cartSum += item.product.price * item.quantity;
       });
 
     }
@@ -74,13 +78,23 @@ export class HeaderComponent {
 
   preFetch(){ // prefetches data and populates popup of search box
     if (this.searchTerm.trim().length > 0){
-      this.apiService.loadSearchPreview(this.searchTerm.trim());
+      this.apiService.getSearchPreview(this.searchTerm.trim()).subscribe( list =>{
+        if (list){
+          this.searchList.set(list);
+
+          if (this.searchList().length > 0){
+            this.expandSearch = true;
+          }else{
+            this.expandSearch = false;
+          }
+
+        }else{
+          console.log("No products found");
+        }
+
+      });
       
-      if (this.apiService.searchList().length > 0){
-        this.expandSearch = true;
-      }else{
-        this.expandSearch = false;
-      }
+      
     }
   }
   openSearchBox(event: MouseEvent){

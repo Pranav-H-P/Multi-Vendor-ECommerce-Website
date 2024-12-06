@@ -4,11 +4,18 @@
     <img [src]="apiService.backendURL + 'images/product/' +
     productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
     class="h-auto w-auto rounded-2xl object-cover"
-    [routerLink]="'/product/' + productData.productId">
+    [routerLink]="'/product/' + productData.productId"
+    [ngClass]="{'opacity-45': thisProd}">
 
     <div class="flex flex-col absolute bottom-0 left-0 bg-slate-400/60 m-2 p-1 rounded-xl pointer-events-none">
-        <p class="font-bebas text-xl">{{productData.productName}}</p>
-        <p class="font-bebas">{{productData.vendorName}}</p>
+        
+        @if (thisProd) {
+            <p class="font-bebas text-xl">Currently Viewing</p>
+        }@else {
+            <p class="font-bebas text-xl">{{productData.productName}}</p>
+            <p class="font-bebas">{{productData.vendorName}}</p>
+        }
         
     </div>
 </div>
+

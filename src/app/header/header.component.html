@@ -59,11 +59,11 @@
             max-h-96 overflow-y-scroll"
             [class.opacity-0]="!expandSearch" [class.pointer-events-none]="!expandSearch">
         
-            @for (item of apiService.searchList(); track $index) {
+            @for (item of searchList(); track $index) {
                 
                 <p [routerLink]="['/product',item.productId]" class="px-5 py-1 w-auto cursor-pointer font-exo2 text-xl text-gray-300 hover:font-bold">{{item.productName}}</p>
 
-                @if ($index != apiService.searchList().length - 1) {
+                @if ($index != searchList().length - 1) {
                     <hr class="mx-5 border-t-2 border border-red-500">
                 }
 
@@ -90,9 +90,9 @@
         <div class="flex relative">
             <img (click)="toggleCart($event)" src="../../assets/icons/bag.png" class="h-auto w-12 relative z-20"> 
             
-            @if (apiService.cartList().length > 0) {
+            @if (cartList().length > 0) {
                 <div class="absolute rounded-full bg-yellow-300 h-5 w-5 flex justify-center content-center z-30">
-                    <p class="font-bebas text-sm">{{apiService.cartList().length}}</p>
+                    <p class="font-bebas text-sm">{{cartList().length}}</p>
                 </div>
                 
             }
@@ -105,11 +105,11 @@
     
                 <p  class="font-exo2 text-3xl text-gray-300">Cart</p>
                 
-                @for (item of apiService.cartList(); track $index) {
+                @for (item of cartList(); track $index) {
 
                     <div class="flex justify-between">
-                        <p class="font-exo2 text-xl text-gray-300 truncate mr-3">{{item.productName}}</p>
-                        <p class="font-exo2 text-xl text-gray-300">{{item.price}}*{{item.quantity}}</p>
+                        <p class="font-exo2 text-xl text-gray-300 truncate mr-3">{{item.product.productName}}</p>
+                        <p class="font-exo2 text-xl text-gray-300">{{item.product.price}}*{{item.quantity}}</p>
                     </div>
     
                     <hr class="border-t-2 border border-red-500">
@@ -118,7 +118,7 @@
                 }@empty {
                     <p class="font-exo2 text-xl text-gray-300">Empty!</p>
                 }
-                @if (apiService.cartList().length != 0) {
+                @if (cartList().length != 0) {
                     <div class="flex justify-between">
                         <p class="font-exo2 text-xl text-gray-300 truncate mr-3">Total:</p>
                         <p class="font-exo2 text-xl text-gray-300">{{cartSum}}</p>

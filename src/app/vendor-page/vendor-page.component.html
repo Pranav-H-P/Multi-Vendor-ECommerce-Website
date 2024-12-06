@@ -1,1 +1,60 @@
-<p>vendor-page works!</p>
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+
+
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:p-20 large:px-[10%]">
+        <div class="h-64 w-64 extraSmall:w-80 extraSmall:h-80 medium:w-96 medium:h-96 overflow-hidden rounded-2xl
+        medium:basis-2/3">
+        <img class="h-auto w-64 extraSmall:w-80 medium:w-96 rounded-2xl object-contain" 
+        [src]="apiService.backendURL + 'images/user/' + vendorId"  alt="vendorName">
+    
+        </div>
+        
+
+        <div class="flex flex-col items-center basis-2/5">
+            <p class="text-5xl font-bebas">About {{vendorData()?.name}}</p>
+            <p class="text-xl">{{vendorData()?.description}}</p>
+        </div>
+        
+    </div>
+
+    <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
+
+        <p class="ml-4 text-4xl text-left mr-auto font-bebas">Latest from {{vendorData()?.name}}!</p>
+
+        <div class="mx-auto mt-5 extraSmall:mt-0 py-10 grid grid-cols-2 gap-4
+        medium:flex medium:flex-row medium:items-center extraSmall:bg-slate-200 relative w-[90%]
+        small:w-[100%] extraSmall:p-10 rounded-xl medium:justify-between">
+
+            <img src="../../assets/icons/right.png" class="absolute rounded-2xl w-14 h-14 bg-slate-300/50
+                right-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-10" (click)="nextLatestPage()">
+
+            <img src="../../assets/icons/left.png"  class="absolute rounded-2xl w-14 h-14 bg-slate-300/50
+            left-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-10" (click)="prevLatestPage()">
+
+            @for (item of latestList(); track $index) {
+                
+                <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                
+
+            }@empty {
+                @if (latestPageNo() == 0) {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No items found!</p>
+                }@else {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No more items!</p>
+                }
+                
+            }
+        </div>
+
+    </div>
+
+    <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20 p-5">
+    <p class="font-bebas text-4xl">Contact Information</p>
+    <p class="text-xl">Email us at {{vendorEmail()}}</p>
+    <p class="text-xl">Call us at {{vendorMobile()}}</p>
+    </div>
+
+</section>

@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { CartItemDTO, ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO } from '../models';
+import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO, Vendor } from '../models';
 import { LocalStorageService } from './local-storage.service';
 import { UserDataService } from './user-data.service';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,12 @@ import { catchError, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
+/*
+Contains methods to access all API endpoints that are not authenticated
+*/
+
+
 export class ApiService {
 
 
@@ -19,11 +25,6 @@ export class ApiService {
 
 
   constructor() { }
-
-
-  cartList = signal<CartItemDTO[]>([]);
-
-  searchList = signal<ProductDTO[]>([]);
 
   // image related methods
   getProductImageList(id: number){
@@ -38,32 +39,27 @@ export class ApiService {
 
   // product related methods
 
-  searchProducts(criteria: SearchCriteriaDTO){
-    this.http.post<ProductDTO[]>(this.backendURL + 'product/search', criteria)
-      .subscribe({
-        next: (response) => {
-          this.searchList.set(response);
-        },
-        error: (error) => {
-          this.searchList.set([]);
-        }
-      });
+  searchProducts(criteria: SearchCriteriaDTO){ // proper search with criteria
+
+    return this.http.post<ProductDTO[]>(this.backendURL + 'product/search', criteria)
+    .pipe(
+      catchError((error) => {
+        console.log("Products not found", error);
+        return of(null);
+      })
+    );
   }
 
-  loadSearchPreview(itemName: string){ // for homebar search
+  getSearchPreview(itemName: string){ // for homebar search
 
     let criteria: SearchCriteriaDTO = {
       searchTerm: itemName,
       perPage: 6
     };
-    this.searchProducts(criteria)
+    return this.searchProducts(criteria);
   }
 
-  loadSearchResults(){
-
-  }
-
-  getProductData(id: number): Observable<ProductDTO | null> {
+  getProductData(id: number): Observable<ProductDTO | null> { // get one ProductDTO by id, not searching
     return this.http.get<ProductDTO>(this.backendURL + 'product/' + id.toString())
     .pipe(
       catchError((error) => {
@@ -73,7 +69,7 @@ export class ApiService {
     );
   }
 
-  loadSimilar(product: any, perPage: number, pgNo: number) {
+  getSimilar(product: ProductDTO | null, perPage: number, pgNo: number) { // load other items in category
 
     if (product === null || product === undefined){
       return;
@@ -86,13 +82,32 @@ export class ApiService {
       category: product.categoryName
     };
 
-    return this.http.post<ProductDTO[]>(this.backendURL + 'product/search', criteria)
+    return this.searchProducts(criteria);
+    
+  }
+
+  // Vendor public data related methods
+
+  getVendorDetails(vendorId: number){
+    return this.http.get<Vendor>(this.backendURL + 'vendor/' + vendorId )
     .pipe(
       catchError((error) => {
-        console.log("Products not found", error);
+        console.log("Vendor not found", error);
         return of(null);
       })
     );
+  }
+
+  getLatestByVendor(vendorName: string, perPage: number, pgNo: number): Observable<ProductDTO[] | null>{
+    let criteria: SearchCriteriaDTO = {
+      searchTerm: "",
+      perPage: perPage,
+      pageNumber: pgNo,
+      vendor: vendorName
+    }
+
+    return this.searchProducts(criteria);
+
   }
 
   // rating related methods
@@ -107,7 +122,7 @@ export class ApiService {
     );
   }
 
-  loadUserReviews(criteria: ReviewCriteriaDTO) {
+  getUserReviews(criteria: ReviewCriteriaDTO) { // returns list of reviews for a product
     console.log("crit:");
     console.log(criteria)
     return this.http.post<ReviewDTO[]>(this.backendURL + 'product/review', criteria)

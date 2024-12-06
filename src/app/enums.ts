@@ -17,3 +17,9 @@ export enum Rating{
     GOOD,
     EXCELLENT
 }
+
+export enum VendorApprovalStatus{
+    APPROVED,
+    PENDING,
+    REJECTED
+}

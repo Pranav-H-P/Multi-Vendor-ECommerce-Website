@@ -48,8 +48,6 @@ export class ProductPageComponent implements OnInit{
 
   byDate = true;
 
-  productCartWidth = 160 + 100; // second number for margin of error
-
   lastPageNo = -1; // when similar products were fetched last (to reduce no of calls)
 
   byDateText = ["Latest", "Oldest"]; // sort order text for date option
@@ -73,18 +71,20 @@ export class ProductPageComponent implements OnInit{
 
   loadSimilarProducts(perPage: number){ 
     
-    if (perPage == this.similarProducts().length && 
-        this.similarPageNo() == this.lastPageNo){
-      return
+    if (perPage == this.similarProducts().length && // to prevent spamming the server
+        this.similarPageNo() == this.lastPageNo){   // if required per page is the same as already present
+          
+          return                                    // and current call page number is equal to page number of last call
+                                                    // (basically just a repeat call)
     }
 
-    this.apiService.loadSimilar(this.productData(),
+    this.apiService.getSimilar(this.productData(),
       perPage, this.similarPageNo())?.subscribe(pList => {
 
       if (pList) {
         this.similarProducts.set(pList);
         this.lastPageNo = this.similarPageNo();
-        console.log(pList);
+        
         
       } else {
         this.similarProducts.set([]);
@@ -124,7 +124,7 @@ export class ProductPageComponent implements OnInit{
       ratingOrder: ratingOrder
     }
 
-    this.apiService.loadUserReviews(criteria).subscribe(rList =>{
+    this.apiService.getUserReviews(criteria).subscribe(rList =>{
 
         if (rList){
           this.userReviews.set(rList);
@@ -227,7 +227,7 @@ export class ProductPageComponent implements OnInit{
     
   }
 
-  getPerPageCount(){
+  getPerPageCount(){ // experimentally found out
 
     if (window.innerWidth >= 1280){
         return 5;
@@ -239,6 +239,11 @@ export class ProductPageComponent implements OnInit{
         return 6;
     }
     
+  }
+  @HostListener('window:resize', ['$event']) // repaginate whenever the site changes size
+  onResize(event: Event) {
+    
+    this.loadSimilarProducts(this.getPerPageCount());
   }
 
   setByDate(bool: boolean){
@@ -258,11 +263,7 @@ export class ProductPageComponent implements OnInit{
 
   }
   
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    
-    this.loadSimilarProducts(this.getPerPageCount());
-  }
+  
   
 
 }

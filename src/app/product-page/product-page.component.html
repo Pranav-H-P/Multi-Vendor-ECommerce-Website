@@ -37,7 +37,7 @@
                 <p class="font-exo2 text-xl hover:text-black/70 cursor-pointer"
                 [routerLink]="['/vendor/' + productData()?.vendorId]">Sold by: {{productData()?.vendorName}}</p>
                 
-                <div class="flex flex-col extraSmall:flex-row gap-2 items-center medium:flex-col large:flex-row">
+                <div class="flex flex-col extraSmall:flex-row gap-2 items-center medium:items-start medium:flex-col large:flex-row">
 
                     <p class="extraSmall:order-1">{{productData()?.averageRating?.toFixed(2)??"No Reviews"}}</p>
                     <app-rating-stars [useProductData]="true" [productData]="productData"></app-rating-stars>
@@ -62,6 +62,7 @@
                 }@else {
                     <p class="text-left font-bold font-bebas">Out of Stock!</p>
                 }
+                
 
             </div>
         </div>
@@ -81,15 +82,17 @@
         small:w-[100%] extraSmall:p-10 rounded-xl medium:justify-between">
 
             <img src="../../assets/icons/right.png" class="absolute rounded-2xl w-14 h-14 bg-slate-300/50
-                right-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-30" (click)="nextProductPage()">
+                right-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-10" (click)="nextProductPage()">
 
             <img src="../../assets/icons/left.png"  class="absolute rounded-2xl w-14 h-14 bg-slate-300/50
-            left-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-30" (click)="prevProductPage()">
+            left-0 -top-4 extraSmall:top-[50%] hover:bg-slate-400/70 z-10" (click)="prevProductPage()">
 
             @for (item of similarProducts(); track $index) {
                 
                 @if (item.productId != productId()) {
                     <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                }@else {
+                    <app-product-card [thisProd]="true" [bottomText]="true" [productData]="item"></app-product-card>
                 }
 
             }@empty {
