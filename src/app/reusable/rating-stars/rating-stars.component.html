@@ -1,18 +1,34 @@
 <div class="flex gap-2">
     
     @for (item of [].constructor(5); track $index) {
-        
         @if (!modifiable){
-            @if(useProductData && productData()?.averageRating === null){
-                <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
-            }@else if (useProductData && ($index <= (productData()?.averageRating ?? 1) - 1)) {
-                <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
             
-            }@else if ($index <= (starEnum)) {
-                <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
-            }@else {
-                <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
+
+
+            @if (useProductData) {<!--use productDTO-->
+
+                @if (productData()?.averageRating === null) { <!--No ratings-->
+                    
+                    <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
+                }@else if($index <= (productData()?.averageRating ?? 1) - 1){
+                    
+                    <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
+                }@else {
+                    
+                    <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
+                }
+            }@else {  <!--use ratingenum-->
+
+                @if ($index < starVal) {
+                    
+                    <img src="../../../assets/icons/star-red.png" class="w-5 h-5">
+                }@else {
+                    
+                    <img src="../../../assets/icons/star-black.png" class="w-5 h-5">
+                }
+
             }
+
         }@else {
             @if ($index < finalCount) {
                 <img (click)="onClicked($index + 1)" src="../../../assets/icons/star-red.png" class="w-5 h-5">

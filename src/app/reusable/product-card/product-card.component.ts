@@ -2,6 +2,7 @@ import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges} fro
 import { ProductDTO } from '../../models';
 import { ApiService } from '../../services/api.service';
 import { RouterLink } from '@angular/router';
+import { RatingStarsComponent } from "../rating-stars/rating-stars.component";
 
 @Component({
   selector: 'app-product-card',

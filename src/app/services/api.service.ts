@@ -108,6 +108,8 @@ export class ApiService {
   }
 
   loadUserReviews(criteria: ReviewCriteriaDTO) {
+    console.log("crit:");
+    console.log(criteria)
     return this.http.post<ReviewDTO[]>(this.backendURL + 'product/review', criteria)
     .pipe(
       catchError((error) => {

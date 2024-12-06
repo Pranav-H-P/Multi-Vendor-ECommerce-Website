@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, Signal, signal } from '@angular/core';
-import { Rating } from '../../enums';
+import { Component, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
 import { ProductDTO } from '../../models';
+import { Rating } from '../../enums';
 
 @Component({
   selector: 'app-rating-stars',
@@ -12,13 +12,12 @@ import { ProductDTO } from '../../models';
 export class RatingStarsComponent{
 
   @Input() productData = signal<ProductDTO|null>(null); // sometimes it is null due to request latency
-  @Input() useProductData = false;
-  @Input() starEnum : Rating = Rating.HORRIBLE;
+  @Input() useProductData = false; // set as true to use DTO, else it will check for starVal
+  @Input() starVal : Rating = Rating.SATISFACTORY;
   @Input() modifiable = false;
 
 
   finalCount = 0; // zero indexed for compatibility with enum
-
 
   onClicked(id: number){
 
@@ -30,6 +29,7 @@ export class RatingStarsComponent{
 
     
   }
+
 
 
 

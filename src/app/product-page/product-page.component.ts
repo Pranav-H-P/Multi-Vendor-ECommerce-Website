@@ -6,12 +6,15 @@ import { RatingStarsComponent } from "../reusable/rating-stars/rating-stars.comp
 import { UserDataService } from '../services/user-data.service';
 import { ProductCardComponent } from '../reusable/product-card/product-card.component';
 import { SearchSortOrder } from '../enums';
+import { ReviewCardComponent } from "../reusable/review-card/review-card.component";
+import { NgClass } from '@angular/common';
 
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [RouterModule, RatingStarsComponent, ProductCardComponent],
+  imports: [RouterModule, RatingStarsComponent, ProductCardComponent,
+    ReviewCardComponent, NgClass],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css'
 })
@@ -20,7 +23,6 @@ export class ProductPageComponent implements OnInit{
   currImage = 0;
   productImageLink = "";
 
-  
 
   itemCount = 0;
 
@@ -36,23 +38,23 @@ export class ProductPageComponent implements OnInit{
   similarPerPage = signal<number>(4);
 
   reviewPageNo = signal(0);
-  reviewPerPage = signal(5);
+  reviewPerPage = signal(6);
 
   imageList = signal<string[]>([]);
   similarProducts = signal<ProductDTO[]>([]);
   userReviews = signal<ReviewDTO[]>([]);
 
+  byAscending = false;
+
+  byDate = true;
+
   productCartWidth = 160 + 100; // second number for margin of error
 
   lastPageNo = -1; // when similar products were fetched last (to reduce no of calls)
 
-  resizeBreakpoints = [
-    
-
-    ,840//3
-    ,1020//5
-    ,1280//4
-  ];
+  byDateText = ["Latest", "Oldest"]; // sort order text for date option
+  byRatingText = ["Highest", "Lowest"]; // sort order text for date option
+  orderText = this.byDateText;
 
   ngOnInit(){
     
@@ -92,14 +94,32 @@ export class ProductPageComponent implements OnInit{
     );
   }
 
-  loadUserReviews(timeOrder?: SearchSortOrder,
-                  ratingOrder?: SearchSortOrder
-  ){
+  loadUserReviews(){
+
+    let timeOrder:SearchSortOrder | undefined  = SearchSortOrder.ASC;
+    let ratingOrder:SearchSortOrder | undefined = SearchSortOrder.ASC;
+
+    if (this.byDate){
+      if (this.byAscending){
+        timeOrder = SearchSortOrder.ASC;
+        
+      }else{
+        timeOrder = SearchSortOrder.DSC;
+      }
+      ratingOrder = undefined;
+    }else{
+      if (this.byAscending){
+        ratingOrder = SearchSortOrder.ASC;
+      }else{
+        ratingOrder = SearchSortOrder.DSC;
+      }
+      timeOrder = undefined;
+    }
 
     let criteria: ReviewCriteriaDTO = {
       productId: this.productId(),
-      pageNumber: this.reviewPerPage(),
-      perPage: this.reviewPageNo(),
+      pageNumber: this.reviewPageNo(),
+      perPage: this.reviewPerPage(),
       timeOrder: timeOrder,
       ratingOrder: ratingOrder
     }
@@ -193,6 +213,19 @@ export class ProductPageComponent implements OnInit{
     }
     
   }
+  nextReviewPage(){
+    if (this.userReviews().length > 0){
+      this.reviewPageNo.update( value => value + 1);
+      this.loadUserReviews();
+    }
+  }
+  prevReviewPage(){
+    if (this.reviewPageNo() > 0){
+      this.reviewPageNo.update(value => value - 1);
+      this.loadUserReviews();
+    }
+    
+  }
 
   getPerPageCount(){
 
@@ -207,6 +240,24 @@ export class ProductPageComponent implements OnInit{
     }
     
   }
+
+  setByDate(bool: boolean){
+    this.byDate = bool;
+    this.loadUserReviews();
+    
+    if (bool){ // if by date 
+      this.orderText = this.byDateText;
+    }else{
+      this.orderText = this.byRatingText;
+    }
+
+  }
+  setByAscending(bool: boolean){
+    this.byAscending = bool;
+    this.loadUserReviews();
+
+  }
+  
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     

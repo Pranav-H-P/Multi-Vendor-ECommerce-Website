@@ -10,7 +10,7 @@
 
 
     <div class="flex py-10 flex-col medium:flex-row w-auto bg-slate-300 rounded-xl small:mx-10
-    medium:mt-5 small:p-16 items-center justify-around gap-5">
+    medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5">
         
         
         <div class="flex w-64 h-64 extraSmall:w-80 extraSmall:h-80 medium:w-96 medium:h-96 overflow-hidden relative justify-center
@@ -76,7 +76,7 @@
 
         <p class="ml-4 text-4xl text-left mr-auto font-bebas">Similar products</p>
 
-        <div class="mx-auto py-10 grid grid-cols-2 gap-4
+        <div class="mx-auto mt-5 extraSmall:mt-0 py-10 grid grid-cols-2 gap-4
         medium:flex medium:flex-row medium:items-center extraSmall:bg-slate-200 relative w-[90%]
         small:w-[100%] extraSmall:p-10 rounded-xl medium:justify-between">
 
@@ -101,6 +101,53 @@
                 
             }
         </div>
+
+    </div>
+
+    <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20">
+
+        <p class="ml-4 text-4xl text-left mr-auto font-bebas">User Reviews</p>
+        <p class="ml-4 text-2xl text-left mr-auto font-bebas">Sort By</p>
+
+        <div class="flex px-6 medium:w-[100%] justify-between">
+            <button class="rounded-2xl hover:bg-green-100 p-3 w-28"
+            [ngClass]="{'bg-green-200 text-black': byDate, 'bg-slate-700 text-white': !byDate}"
+            (click)="setByDate(true)">Date</button>
+            <button class="rounded-2xl hover:bg-green-100 p-3 w-28"
+            [ngClass]="{'bg-green-200 text-black': !byAscending, 'bg-slate-700 text-white': byAscending}"
+            (click)="setByAscending(false)">{{orderText[0]}}</button>
+            
+        </div>
+        <div class="flex px-6 medium:w-[100%] justify-between">
+            <button class="rounded-2xl hover:bg-green-100 p-3 w-28"
+            [ngClass]="{'bg-green-200 text-black': !byDate, 'bg-slate-700 text-white': byDate}"
+            (click)="setByDate(false)">Rating</button>
+            <button class="rounded-2xl hover:bg-green-100 p-3 w-28"
+            [ngClass]="{'bg-green-200 text-black': byAscending, 'bg-slate-700 text-white': !byAscending}"
+            (click)="setByAscending(true)">{{orderText[1]}}</button>
+        </div>
+
+        <div class="flex flex-col p-3 medium:w-[100%]">
+            
+            @for (item of userReviews(); track $index) {
+                <app-review-card [reviewData]="item"
+                class="my-3"></app-review-card>
+            }@empty {
+                @if (reviewPageNo() == 0) {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No Reviews found!</p>
+                }@else {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No more reviews!</p>
+                }
+                
+            }
+
+            <div class="mt-6 flex gap-3">
+                <button (click)="prevReviewPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Previous</button>
+                <button (click)="nextReviewPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Next</button>
+            </div>
+        </div>
+        
 
     </div>
     

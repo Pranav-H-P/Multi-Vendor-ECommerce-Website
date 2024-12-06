@@ -12,7 +12,7 @@ export enum SearchSortOrder{
 
 export enum Rating{
     HORRIBLE,
-    POOR,
+    POOR, 
     SATISFACTORY,
     GOOD,
     EXCELLENT

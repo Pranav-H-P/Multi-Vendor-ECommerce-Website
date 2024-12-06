@@ -1,1 +1,15 @@
-<p>review-card works!</p>
+<div class="flex flex-col gap-5 bg-slate-200 p-5 py-8 rounded-xl">
+
+    <div class="flex gap-4 items-center">
+        <img [src]="apiService.backendURL + 'images/user/' + reviewData.userId"  alt="user"
+        class="rounded-full w-14 h-14 border-2 border-orange-500 object-cover">
+        <p class="font-bebas text-xl text-left truncate">{{reviewData.userName}}</p>
+        
+    </div>
+    
+    <app-rating-stars [starVal]="rateVal()"></app-rating-stars>
+    <p class="text-sm">Commented on: {{reviewData.reviewDate | date: 'dd-MM-YYYY'}}</p>
+    <p class="">{{reviewData.comment}}</p>
+
+
+</div>
