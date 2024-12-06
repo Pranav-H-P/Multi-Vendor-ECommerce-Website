@@ -1,8 +1,13 @@
-<div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 overflow-hidden transition-all hover:scale-90 " >
+<div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 p-1 bg-red-400 
+    rounded-2xl overflow-hidden transition-all hover:scale-90 relative" >
     
     <img [src]="apiService.backendURL + 'images/product/' +
     productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
     class="h-auto w-auto rounded-2xl object-cover"
-    
     [routerLink]="'/product/' + productData.productId">
+
+    <div class="flex flex-col absolute bottom-0 left-0 bg-slate-400/60 m-2 p-1 rounded-xl pointer-events-none">
+        <p class="font-bebas text-xl">{{productData.productName}}</p>
+        <p class="font-bebas">{{productData.vendorName}}</p>
+    </div>
 </div>

@@ -1,10 +1,11 @@
 import { Component, HostListener, Inject, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { ProductDTO, ReviewDTO } from '../models';
+import { ProductDTO, ReviewCriteriaDTO, ReviewDTO } from '../models';
 import { RatingStarsComponent } from "../reusable/rating-stars/rating-stars.component";
 import { UserDataService } from '../services/user-data.service';
 import { ProductCardComponent } from '../reusable/product-card/product-card.component';
+import { SearchSortOrder } from '../enums';
 
 
 @Component({
@@ -91,9 +92,19 @@ export class ProductPageComponent implements OnInit{
     );
   }
 
-  loadUserReviews(){
-    this.apiService.loadUserReviews(this.productId(),
-      this.reviewPerPage(),this.reviewPageNo()).subscribe(rList =>{
+  loadUserReviews(timeOrder?: SearchSortOrder,
+                  ratingOrder?: SearchSortOrder
+  ){
+
+    let criteria: ReviewCriteriaDTO = {
+      productId: this.productId(),
+      pageNumber: this.reviewPerPage(),
+      perPage: this.reviewPageNo(),
+      timeOrder: timeOrder,
+      ratingOrder: ratingOrder
+    }
+
+    this.apiService.loadUserReviews(criteria).subscribe(rList =>{
 
         if (rList){
           this.userReviews.set(rList);

@@ -107,15 +107,7 @@ export class ApiService {
     );
   }
 
-  loadUserReviews(pId: number, perPage: number, pgNo: number) {
-
-
-    let criteria: ReviewCriteriaDTO = {
-      id: pId,
-      pageNumber: pgNo,
-      perPage: perPage
-    };
-
+  loadUserReviews(criteria: ReviewCriteriaDTO) {
     return this.http.post<ReviewDTO[]>(this.backendURL + 'product/review', criteria)
     .pipe(
       catchError((error) => {

@@ -68,7 +68,9 @@ export interface ReviewDTO{
 }
 
 export interface ReviewCriteriaDTO{ // for retrieving reviews
-    id: number;
+    productId: number;
     pageNumber: number;
     perPage: number;
+    timeOrder?: SearchSortOrder;
+    ratingOrder?: SearchSortOrder;
 }
