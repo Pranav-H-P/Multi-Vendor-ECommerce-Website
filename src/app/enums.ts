@@ -1,7 +1,7 @@
 export enum UserRole{
-    ADMIN,
+    CUSTOMER,
     VENDOR,
-    CUSTOMER
+    ADMIN
 }
 
 export enum SearchSortOrder{

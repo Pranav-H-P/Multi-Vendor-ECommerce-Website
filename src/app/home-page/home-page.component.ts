@@ -3,11 +3,12 @@ import { UserDataService } from '../services/user-data.service';
 import { ApiService } from '../services/api.service';
 import { Category, ProductDTO } from '../models';
 import { ProductCardComponent } from "../reusable/product-card/product-card.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, RouterLink],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
@@ -40,7 +41,7 @@ export class HomePageComponent implements OnInit{
   
   ngOnInit(): void {
     
-    if (this.userDataService.userEmail() != ""){ // user exists
+    if (this.userDataService.userProfile().email != ""){ // user exists
       // do post login init
     }else{ // no user
       this.welcomeMessage.update(val => val + "!");

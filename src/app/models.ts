@@ -88,3 +88,12 @@ export interface Category{
     description: string;
     parentId: number;
 }
+
+export interface UserProfile{
+    id: number;
+    name: string;
+    role?: UserRole;
+    email: string;
+    phoneNumber: number;
+    address: string;
+}

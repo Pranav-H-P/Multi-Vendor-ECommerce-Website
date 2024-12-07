@@ -17,7 +17,7 @@
                 <p [routerLink]="['/orders']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
                 <p [routerLink]="['/wishlist']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
                 
-                @if (userData.userName().length != 0) {
+                @if (userData.userProfile().email.length != 0) {
                     <p (click) = "logout()" class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
                 }
                 
@@ -58,7 +58,7 @@
                 src="../../assets/icons/searchwhite.png">
                 
 
-                <div  class="absolute top-12 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
+                <div  class="absolute top-12 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
                 border-0 border-t-4 
                 border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-1 py-5
                 max-h-96 overflow-y-scroll"
@@ -101,7 +101,7 @@
             }
                 
         
-            <div [routerLink]="['/cart']" (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
+            <div [routerLink]="['/cart']" (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
             border-0 border-t-4 
         border-red-700 flex flex-col w-64 h-auto rounded-xl justify-between p-5"
         [class.opacity-0]="!expandCart" [class.pointer-events-none]="!expandCart">
@@ -138,17 +138,22 @@
             <img (click)="toggleProfile($event)" src="../../assets/icons/user.png" class="h-auto w-14 relative z-20">
 
             
-                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition-all duration-300 bg-slate-800 shadow-2xl z-30 
+                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
                 border-0 border-t-4 
             border-red-700 flex flex-col min-w-40 h-auto rounded-xl justify-between p-10 py-5"
             [class.opacity-0]="!expandProfile" [class.pointer-events-none]="!expandProfile">
-        
-                    <p [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
+            
+                    @if (userData.userProfile().email === ""){
+                        <p [routerLink]="['/login']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log In</p>
+                    }@else {
+                        <p [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
+                    }
+                    
                     <p [routerLink]="['/orders']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
                     <p [routerLink]="['/wishlist']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
                     <p [routerLink]="['/support']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Support</p>
                     
-                    @if (userData.userName().length != 0) {
+                    @if (userData.userProfile().email.length != 0) {
                         <p (click)="logout()" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
                     }
 

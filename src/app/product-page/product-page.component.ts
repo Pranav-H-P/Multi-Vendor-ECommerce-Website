@@ -199,7 +199,7 @@ export class ProductPageComponent implements OnInit{
   }
 
   addToCart(){
-    if (this.userService.userEmail() === ""){
+    if (this.userService.userProfile().email === ""){
 
       this.router.navigate(['login']);
 

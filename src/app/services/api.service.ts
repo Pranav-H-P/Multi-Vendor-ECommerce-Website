@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Category, ProductDTO, ReviewCriteriaDTO, ReviewDTO, SearchCriteriaDTO, Vendor } from '../models';
 import { LocalStorageService } from './local-storage.service';
-import { UserDataService } from './user-data.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { SearchSortOrder } from '../enums';
@@ -22,7 +21,6 @@ export class ApiService {
 
   http = inject(HttpClient)
   localStorageService = inject(LocalStorageService)
-  userDataService = inject(UserDataService)
 
 
   constructor() { }
@@ -162,7 +160,7 @@ export class ApiService {
   // rating related methods
 
   getAverageRating(productId: number): Observable<number | null> {
-    return this.http.get<number>(this.backendURL + '/' + productId.toString() + '/rating')
+    return this.http.get<number>(this.backendURL + productId.toString() + '/rating')
     .pipe(
       catchError((error) => {
         console.log("Product not found", error);

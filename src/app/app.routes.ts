@@ -24,6 +24,10 @@ export const routes: Routes = [
         component: LoginPageComponent
     },
     {
+        path: "login/expired",
+        component: LoginPageComponent
+    },
+    {
         path: "cart",
         component: CartPageComponent
     },

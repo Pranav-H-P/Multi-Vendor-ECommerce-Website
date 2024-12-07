@@ -44,7 +44,7 @@
     medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
 
         <p class="ml-4 text-4xl text-left mr-auto font-bebas">Explore {{randomCategory()?.name}}!</p>
-        <p></p>
+        <p class="ml-6 ">{{randomCategory()?.description}}</p>
 
         <div class="mx-auto mt-5 extraSmall:mt-0 py-10 grid grid-cols-2 gap-4
         medium:flex medium:flex-row medium:items-center extraSmall:bg-slate-200 relative w-[90%]
@@ -74,8 +74,8 @@
     </div>
 
     
-    @if (userDataService.userEmail() == "") {
-        <p class="text-4xl mr-auto font-bebas text-center my-20 mx-auto">Log In For Personalized Recommendations!</p>
+    @if (userDataService.userProfile().email == "") {
+        <p [routerLink]="['/login']" class="text-4xl mr-auto font-bebas text-center my-20 mx-auto cursor-pointer">Log In For Personalized Recommendations!</p>
     }@else {
 
         <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10

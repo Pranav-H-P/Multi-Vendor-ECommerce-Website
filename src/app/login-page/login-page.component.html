@@ -1,1 +1,45 @@
-<p>login-page works!</p>
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col mt-20 ">
+
+        <p class="text-4xl font-bebas mx-auto">Log In</p>
+
+        <div class="flex gap-10 bg-slate-300 p-6 py-14 rounded-lg flex-col items-center extraSmall:w-96 mx-auto">
+            
+            <div class="relative w-72">
+                <input id='email' class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Email" 
+                type="text" 
+                [(ngModel)] = "email">
+            </div>
+
+            <div class="relative w-72">
+
+                <input id='email' class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="password" 
+                [type]="passwordVisible ? 'text' : 'password'" 
+                [(ngModel)] = "password"
+                (keydown.enter)="login()">
+
+                <img (click)="togglePasswordVisible()" class="w-8 h-8 absolute right-5 top-2 rounded-full p-2 hover:bg-black/15 "
+                 [src]="passwordVisible ? '../../assets/icons/lockopen.png' : '../../assets/icons/lockclosed.png'">
+
+            </div>
+            
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="login()">Log In</button>
+
+            <p class="cursor-pointer text-slate-700 hover:text-black">New User? Click here to sign in!</p>
+
+        </div>
+        
+       
+    </div>
+
+
+</section>
