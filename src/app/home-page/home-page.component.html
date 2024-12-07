@@ -2,7 +2,7 @@
 
     <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
         
-        <p class="text-4xl font-bebas">{{welcomeMessage()}}</p>
+        <p class="text-4xl font-bebas">Welcome {{userDataService.userProfile().name}}!</p>
 
     </div>
     
@@ -101,7 +101,7 @@
 
                 }@empty {
                     @if (personalizedPageNo() == 0) {
-                        <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No items found!</p>
+                        <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">Shop some more!</p>
                     }@else {
                         <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No more items!</p>
                     }

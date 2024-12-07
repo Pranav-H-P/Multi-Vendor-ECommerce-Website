@@ -6,7 +6,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   
   
   
-  let token = localStorage.getItem('jwt') || 'asdasdadad';
+  let token = localStorage.getItem('jwt');
   if(token){
     req = req.clone({
     setHeaders:{

@@ -5,11 +5,12 @@ import { ApiService } from '../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CartItemDTO, ProductDTO } from '../models';
+import { ToastComponent } from '../reusable/toast/toast.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, ToastComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -33,6 +34,11 @@ export class HeaderComponent implements OnInit{
 
   searchList = signal<ProductDTO[]>([]);
   cartList = signal<CartItemDTO[]>([]);
+
+  toastDuration = 3000;
+  toastVisible = signal(false);
+  toastMessage = signal("Testing");
+  toastSuccess = signal(true);
 
   ngOnInit(): void {
     // add profile getting steps
@@ -124,10 +130,21 @@ export class HeaderComponent implements OnInit{
     this.expandHamburger = false;
   }
 
-  logout(){ // add later
+  logout(){
+    this.userData.logOut();
+    this.activateToast("Successfully Logged Out!", true);
 
   }
 
+  activateToast(msg: string, status: boolean){
+    this.toastVisible.set(true);
+    this.toastMessage.set(msg);
+    this.toastSuccess.set(status);
+    
+    setTimeout(() => {
+      this.toastVisible.set(false);
+      }, this.toastDuration);
+  }
 
   
 

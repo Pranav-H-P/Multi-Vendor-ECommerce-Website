@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { AfterViewChecked, Component, HostListener, inject, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { UserDataService } from '../services/user-data.service';
 import { ApiService } from '../services/api.service';
 import { Category, ProductDTO } from '../models';
@@ -37,16 +37,8 @@ export class HomePageComponent implements OnInit{
   personalizedPerPage = signal(5);
   lastPersonalizedPageNo = -1;
 
-  welcomeMessage = signal("Welcome ");
   
   ngOnInit(): void {
-    
-    if (this.userDataService.userProfile().email != ""){ // user exists
-      // do post login init
-    }else{ // no user
-      this.welcomeMessage.update(val => val + "!");
-
-    }
 
     // random category selection
     this.apiService.getAllCategories().subscribe( catList =>{
@@ -66,7 +58,6 @@ export class HomePageComponent implements OnInit{
     );
     
   }
-
 
   getLatestProducts(perPage: number){
     if (perPage == this.latestList().length && // to prevent spamming the server, check product page.ts for more info

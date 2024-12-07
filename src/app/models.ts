@@ -96,4 +96,7 @@ export interface UserProfile{
     email: string;
     phoneNumber: number;
     address: string;
+    isActive?: boolean;
+    passwordHash?: string; // gets removed before sending
+
 }

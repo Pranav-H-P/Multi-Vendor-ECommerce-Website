@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ToastComponent } from "../reusable/toast/toast.component";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserDataService } from '../services/user-data.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
@@ -8,7 +8,7 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ToastComponent, FormsModule],
+  imports: [ToastComponent, FormsModule, RouterLink],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
@@ -45,7 +45,7 @@ export class LoginPageComponent implements OnInit{
       return;
     }
 
-    this.userDataService.logIn(this.email,this.password).subscribe(response =>{
+    this.userDataService.login(this.email,this.password).subscribe(response =>{
       if (response){
         if (response.err == null){
           this.userDataService.setJwt(response.jwt);

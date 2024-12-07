@@ -9,35 +9,50 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { VendorPageComponent } from './vendor-page/vendor-page.component';
 import { SupportPageComponent } from './support-page/support-page.component';
 import { SearchPageComponent } from './search-page/search-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { adminGuard } from './guards/admin.guard';
+import { loginGuard } from './guards/login.guard';
+import { noLoginGuard } from './guards/no-login.guard';
+import { vendorGuard } from './guards/vendor.guard';
+import { homepageGuard } from './guards/homepage.guard';
+import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 
 export const routes: Routes = [
     {
         path: "",
-        component: HomePageComponent
+        component: HomePageComponent,
+        canActivate: [homepageGuard]
     },
     {
         path: "home",
-        component: HomePageComponent
+        component: HomePageComponent,
+        canActivate: [homepageGuard]
     },
     {
         path: "login",
-        component: LoginPageComponent
+        component: LoginPageComponent,
+        canActivate: [noLoginGuard]
     },
     {
         path: "login/expired",
-        component: LoginPageComponent
+        component: LoginPageComponent,
+        canActivate: [noLoginGuard]
     },
     {
         path: "cart",
-        component: CartPageComponent
+        component: CartPageComponent,
+        canActivate: [loginGuard]
     },
     {
         path: "order",
-        component: OrderPageComponent
+        component: OrderPageComponent,
+        canActivate: [loginGuard]
     },
     {
         path: "wishlist",
-        component: WishlistPageComponent
+        component: WishlistPageComponent,
+        canActivate: [loginGuard]
     },
     {
         path: "product/:id",
@@ -49,10 +64,32 @@ export const routes: Routes = [
     },
     {
         path: "support",
-        component: SupportPageComponent
-    },{
+        component: SupportPageComponent,
+        canActivate: [loginGuard]
+    },
+    {
+        path: "register/customer",
+        component: RegisterPageComponent,
+        canActivate: [noLoginGuard]
+    },
+    {
+        path: "register/vendor",
+        component: RegisterPageComponent,
+        canActivate: [noLoginGuard]
+    },
+    {
         path: "search/:term",
         component: SearchPageComponent
+    },
+    {
+        path: "admin/dashboard",
+        component: AdminDashboardComponent,
+        canActivate: [adminGuard]
+    },
+    {
+        path: "vendorhome",
+        component: VendorDashboardComponent,
+        canActivate: [vendorGuard]
     },
     {
         path: "**",

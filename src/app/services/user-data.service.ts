@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, UserProfile } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, RegisterDTO, UserProfile } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { ApiService } from './api.service';
@@ -43,7 +43,7 @@ export class UserDataService {
   constructor() {
 
     this.backendURL = this.apiService.backendURL;
-
+    
 
     if (this.jwt){ // jwt exists
       console.log(this.jwt)
@@ -56,7 +56,7 @@ export class UserDataService {
             this.getUserData().subscribe(data=>{
               if (data){
                 this.userProfile.set(data);
-  
+
                 this.router.navigate(['/home']);
   
               }else{
@@ -99,7 +99,7 @@ export class UserDataService {
     );
   }
 
-  logIn(email: string, password: string){ // to recieve jwt from server
+  login(email: string, password: string){ // to recieve jwt from server
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -111,6 +111,23 @@ export class UserDataService {
     }
 
     return this.http.post<AuthResponseDTO>(this.backendURL + 'auth/login', userCredentials, {headers})
+        .pipe(
+          catchError((error) => {
+            console.log(error);
+            return of(null);
+          })
+    )
+
+    
+  }
+
+  register(registerData: RegisterDTO){
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<AuthResponseDTO>(this.backendURL + 'auth/register', registerData, {headers})
         .pipe(
           catchError((error) => {
             console.log(error);
@@ -134,6 +151,19 @@ export class UserDataService {
           })
     )
 
+  }
+
+  logOut(){
+    this.localStorageService.removeJWT();
+    this.userProfile = signal<UserProfile>({
+      name: "",
+      id: -1,
+      email: "",
+      address: "",
+      role: undefined,
+      phoneNumber: -1
+  
+    })
   }
 
   setJwt(jwt: string){ // will be called by login page if login is successful

@@ -7,6 +7,11 @@ export class LocalStorageService {
 
   constructor() { }
 
+
+  removeJWT(){// for logging out
+    localStorage.removeItem('jwt');
+  }
+
   setJWT(token: string){
     localStorage.setItem('jwt', token);
   }
