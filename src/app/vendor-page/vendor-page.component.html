@@ -35,7 +35,7 @@
 
             @for (item of latestList(); track $index) {
                 
-                <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                <app-product-card [expanded]="false" [productData]="item"></app-product-card>
                 
 
             }@empty {

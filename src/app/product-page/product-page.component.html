@@ -91,9 +91,9 @@
             @for (item of similarProducts(); track $index) {
                 
                 @if (item.productId != productId()) {
-                    <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                    <app-product-card [expanded]="false" [productData]="item"></app-product-card>
                 }@else {
-                    <app-product-card [thisProd]="true" [bottomText]="true" [productData]="item"></app-product-card>
+                    <app-product-card [thisProd]="true" [expanded]="false" [productData]="item"></app-product-card>
                 }
 
             }@empty {

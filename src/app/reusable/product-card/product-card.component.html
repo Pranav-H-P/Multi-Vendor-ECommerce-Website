@@ -1,21 +1,62 @@
-<div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 p-1 bg-red-500 
-    rounded-2xl overflow-hidden transition-all hover:scale-90 relative" >
     
-    <img [src]="apiService.backendURL + 'images/product/' +
-    productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
-    class="h-auto w-auto rounded-2xl object-cover"
-    [routerLink]="'/product/' + productData.productId"
-    [ngClass]="{'opacity-45': thisProd}">
+    
+@if (expanded){
+    <div class="flex flex-col items-center 
+    gap-5 medium:items-start medium:flex-row
+    bg-slate-200 p-5 py-8 rounded-xl transition-all hover:scale-95"
+    [routerLink]="'/product/' + productData.productId">
+        
+        <div class="relative w-52 h-auto extraSmall:w-60 medium:w-72">
 
-    <div class="flex flex-col absolute bottom-0 left-0 bg-slate-400/60 m-2 p-1 rounded-xl pointer-events-none">
+            <img [src]="apiService.backendURL + 'images/product/' +
+            productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
+            class="h-auto w-auto rounded-2xl object-cover"
+            [ngClass]="{'opacity-45':productData.stock == 0}">
+
+            <div class="flex flex-col absolute bottom-0 left-0 bg-red-400/60 m-2 rounded-xl pointer-events-none">
+                
+                @if (productData.stock == 0){
+                    <p class="font-bebas text-xl m-2">Out Of Stock!</p>
+                }
+                
+            </div>
         
-        @if (thisProd) {
-            <p class="font-bebas text-xl">Currently Viewing</p>
-        }@else {
-            <p class="font-bebas text-xl">{{productData.productName}}</p>
-            <p class="font-bebas">{{productData.vendorName}}</p>
-        }
-        
+        </div>
+
+        <div class="flex flex-col items-start gap-2">
+            <p class="font-bebas text-3xl text-left truncate">{{productData.productName}}</p>
+            <p class="text-xl text-left truncate">Sold By: {{productData.vendorName}}</p>
+            <app-rating-stars [useProductData]="true" [productData]="pdSignal"></app-rating-stars>
+            
+            <p class="font-bebas font-bold text-2xl">{{formatToIndianCurrency(productData.price)}}</p>
+        </div>
+            
     </div>
-</div>
+}@else {
+    <div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 p-1 bg-red-500 
+        rounded-2xl overflow-hidden transition-all hover:scale-90 relative" >
+        
+        <img [src]="apiService.backendURL + 'images/product/' +
+        productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
+        class="h-auto w-auto rounded-2xl object-cover"
+        [routerLink]="'/product/' + productData.productId"
+        [ngClass]="{'opacity-45': thisProd || productData.stock == 0}">
 
+        
+
+
+        <div class="flex flex-col absolute bottom-0 left-0 bg-slate-400/60 m-2 p-1 rounded-xl pointer-events-none">
+            
+            @if (thisProd) {
+                <p class="font-bebas text-xl">Currently Viewing</p>
+            }@else if (productData.stock == 0){
+                <p class="font-bebas text-xl">Out Of Stock!</p>
+            }@else {
+                <p class="font-bebas text-xl">{{productData.productName}}</p>
+                <p class="font-bebas">{{productData.vendorName}}</p>
+            }
+            
+        </div>
+    </div>
+
+}

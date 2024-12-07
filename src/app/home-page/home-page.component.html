@@ -1,8 +1,8 @@
 <section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
 
-    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:p-20 large:px-[5%]">
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
         
-        <p class="text-4xl">{{welcomeMessage()}}</p>
+        <p class="text-4xl font-bebas">{{welcomeMessage()}}</p>
 
     </div>
     
@@ -24,7 +24,7 @@
 
             @for (item of latestList(); track $index) {
                 
-                <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                <app-product-card [expanded]="false" [productData]="item"></app-product-card>
                 
 
             }@empty {
@@ -58,7 +58,7 @@
 
             @for (item of randomList(); track $index) {
                 
-                <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                <app-product-card [expanded]="false" [productData]="item"></app-product-card>
                 
 
             }@empty {
@@ -96,7 +96,7 @@
 
                 @for (item of personalizedList(); track $index) {
                     
-                    <app-product-card [bottomText]="true" [productData]="item"></app-product-card>
+                    <app-product-card [expanded]="false" [productData]="item"></app-product-card>
                     
 
                 }@empty {

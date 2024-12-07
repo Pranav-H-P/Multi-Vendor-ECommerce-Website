@@ -94,7 +94,6 @@ export class HomePageComponent implements OnInit{
     .subscribe( list =>{
       if (list){
         this.randomList.set(list);
-        console.log("got rand"+list)
         this.lastRandomPageNo = this.randomPageNo();
       }else{
         this.randomList.set([]);
@@ -114,7 +113,6 @@ export class HomePageComponent implements OnInit{
     .subscribe( list =>{
       if (list){
         this.personalizedList.set(list);
-        console.log("got rand"+list)
         this.lastPersonalizedPageNo = this.personalizedPageNo();
       }else{
         this.personalizedList.set([]);

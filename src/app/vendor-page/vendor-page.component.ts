@@ -51,12 +51,9 @@ export class VendorPageComponent{
         this.latestPageNo() == this.lastPageNo){
       return
     }
-    console.log("calling");
-
     this.apiService.getLatestByVendor(this.vendorData()?.name ?? "", perPage,this.latestPageNo())
     .subscribe( list =>{
       if (list){
-        console.log("calling and got");
         this.latestList.set(list);
         this.lastPageNo = this.latestPageNo();
       }else{

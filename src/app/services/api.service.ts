@@ -128,7 +128,7 @@ export class ApiService {
     return this.http.get<Category[]>(this.backendURL + 'product/category')
     .pipe(
       catchError((error) => {
-        console.log("Vendor not found", error);
+        console.log("Category not found", error);
         return of(null);
       })
     );
@@ -138,6 +138,16 @@ export class ApiService {
 
   getVendorDetails(vendorId: number){
     return this.http.get<Vendor>(this.backendURL + 'vendor/' + vendorId )
+    .pipe(
+      catchError((error) => {
+        console.log("Vendor not found", error);
+        return of(null);
+      })
+    );
+  }
+
+  getVendorList(pageNo: number, perPage: number){ // returns closest 5 vendor names
+    return this.http.get<Vendor[]>(this.backendURL + 'vendor/list/' + pageNo + "/" + perPage )
     .pipe(
       catchError((error) => {
         console.log("Vendor not found", error);
