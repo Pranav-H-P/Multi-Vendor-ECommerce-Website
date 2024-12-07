@@ -46,7 +46,6 @@ export class UserDataService {
     
 
     if (this.jwt){ // jwt exists
-      console.log(this.jwt)
       this.refreshToken().subscribe(response =>{
         if (response){
 
@@ -55,8 +54,9 @@ export class UserDataService {
 
             this.getUserData().subscribe(data=>{
               if (data){
+                console.log(data);
                 this.userProfile.set(data);
-
+                
                 this.router.navigate(['/home']);
   
               }else{
@@ -65,15 +65,15 @@ export class UserDataService {
             });
 
           }else{
-            console.log("error2")
             this.router.navigate(['login/expired']);
             this.jwt = null;
+            this.logOut()
           }
           
         }else{
-          console.log("error1")
           this.router.navigate(['login/expired']);
           this.jwt = null;
+          this.logOut()
         }
       });
 
@@ -139,11 +139,9 @@ export class UserDataService {
   }
 
   getUserData(){ // fill user data
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.jwt
-    });
+    
 
-    return this.http.get<UserProfile>(this.backendURL + "auth/userdata", {headers})
+    return this.http.get<UserProfile>(this.backendURL + "auth/userdata")
         .pipe(
           catchError((error) => {
             console.log(error);
@@ -151,6 +149,14 @@ export class UserDataService {
           })
     )
 
+  }
+
+  refreshUserData(){
+    this.getUserData().subscribe(data=>{
+      if (data){
+        this.userProfile.set(data);
+      }
+    })
   }
 
   logOut(){
@@ -170,4 +176,70 @@ export class UserDataService {
     this.jwt = jwt;
     this.localStorageService.setJWT(jwt);
   }
+
+  updateAddress(address: string){
+    return this.http.post<string>(this.backendURL + "customer/updateaddress", address, {
+      headers: { 'Content-Type': 'text/plain' },
+      responseType: 'text' as 'json'
+    }).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+  
+  
+  uploadProductPictures(files: File[], productId: number){
+
+    if (files != null){
+
+      const formData: FormData = new FormData();
+
+      files.forEach(
+        file =>{
+          formData.append('file', file, file.name);
+        }
+      );
+      
+      formData.append("id", productId.toString());
+  
+      return this.http.post<string>(this.backendURL + "images/uploadProductimage", formData,
+        {responseType: 'text' as 'json'}
+      ).pipe(
+        catchError((error) => {
+          console.log(error);
+          return of(null);
+        })
+      );
+
+    }else{
+      return of(null);
+    }
+
+  }
+
+  uploadProfilePicture(file: File | null){
+
+    if (file != null){
+
+      const formData: FormData = new FormData();
+      formData.append('file', file, file.name);
+  
+      return this.http.post<string>(this.backendURL + "images/uploaduserimage", formData,
+        {responseType: 'text' as 'json'}
+      ).pipe(
+        catchError((error) => {
+          console.log(error);
+          return of(null);
+        })
+      );
+
+    }else{
+      return of(null);
+    }
+
+  }
 }
+
+

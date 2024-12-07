@@ -17,6 +17,7 @@ import { noLoginGuard } from './guards/no-login.guard';
 import { vendorGuard } from './guards/vendor.guard';
 import { homepageGuard } from './guards/homepage.guard';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 export const routes: Routes = [
     {
@@ -59,7 +60,7 @@ export const routes: Routes = [
         component: ProductPageComponent
     },
     {
-        path: "vendor/:id",
+        path: "vendorpage/:id",
         component: VendorPageComponent
     },
     {
@@ -87,9 +88,13 @@ export const routes: Routes = [
         canActivate: [adminGuard]
     },
     {
-        path: "vendorhome",
+        path: "vendor/dashboard",
         component: VendorDashboardComponent,
         canActivate: [vendorGuard]
+    },
+    {
+        path: "profile",
+        component: ProfilePageComponent
     },
     {
         path: "**",

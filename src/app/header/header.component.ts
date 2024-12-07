@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CartItemDTO, ProductDTO } from '../models';
 import { ToastComponent } from '../reusable/toast/toast.component';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule, RouterModule, ToastComponent],
+  imports: [FormsModule, RouterModule, ToastComponent, NgClass],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -133,6 +134,7 @@ export class HeaderComponent implements OnInit{
   logout(){
     this.userData.logOut();
     this.activateToast("Successfully Logged Out!", true);
+    this.router.navigate(['login']);
 
   }
 
@@ -144,6 +146,13 @@ export class HeaderComponent implements OnInit{
     setTimeout(() => {
       this.toastVisible.set(false);
       }, this.toastDuration);
+  }
+
+
+  isCustomer(){
+
+    return !(this.userData.userProfile().role?.toString() === 'VENDOR'
+            || this.userData.userProfile().role?.toString() === 'ADMIN')
   }
 
   

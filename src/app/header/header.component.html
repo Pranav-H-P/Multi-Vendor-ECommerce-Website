@@ -13,13 +13,20 @@
             flex flex-col gap-4 p-2 pl-6 py-10"
             [class.opacity-0]="!expandHamburger" [class.pointer-events-none]="!expandHamburger">
 
-                <p [routerLink]="['/cart']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
-                <p [routerLink]="['/profile']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Profile</p>
-                <p [routerLink]="['/orders']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
-                <p [routerLink]="['/wishlist']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
+                <p [ngClass]="{'hidden': !isCustomer()}" (click)="closeHamburger()"
+                [routerLink]="['/cart']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Cart</p>
+                
+                <p [routerLink]="['/profile']" (click)="closeHamburger()"
+                class="font-exo2 text-3xl text-gray-300 hover:font-bold">Profile</p>
+                
+                <p [ngClass]="{'hidden': !isCustomer()}" (click)="closeHamburger()"
+                [routerLink]="['/orders']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Orders</p>
+                
+                <p [ngClass]="{'hidden': !isCustomer()}" (click)="closeHamburger()"
+                [routerLink]="['/wishlist']" class="font-exo2 text-3xl text-gray-300 hover:font-bold">Wishlist</p>
                 
                 @if (userData.userProfile().email.length != 0) {
-                    <p (click) = "logout()" class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
+                    <p (click) = "logout()" (click)="closeHamburger()" class="font-exo2 text-3xl text-gray-300 hover:font-bold mt-auto">Log Out</p>
                 }
                 
 
@@ -46,7 +53,7 @@
 
     <!--Center items, search bar-->
 
-    @if (!router.url.startsWith('/search/')){
+    @if (!router.url.startsWith('/search/') && userData.userProfile().role?.toString() === "USER"){
         <div class="flex justify-center medium:justify-between items-center extraSmall:gap-2">
             
             <div class="relative">
@@ -59,7 +66,7 @@
                 src="../../assets/icons/searchwhite.png">
                 
 
-                <div  class="absolute top-12 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
+                <div  class="absolute top-12 transition-all duration-300 bg-slate-800/95 shadow-2xl z-30 
                 border-0 border-t-4 
                 border-red-700 flex flex-col gap-2 w-56 extraSmall:w-72 h-max rounded-xl justify-between p-1 py-5
                 max-h-96 overflow-y-scroll"
@@ -91,7 +98,8 @@
 
     <div class="justify-between items-center gap-4 hidden medium:flex">
         
-        <div class="flex relative">
+        <div class="flex relative"
+        [ngClass]="{'hidden': !isCustomer()}">
             <img (click)="toggleCart($event)" src="../../assets/icons/bag.png" class="h-auto w-12 relative z-20"> 
             
             @if (cartList().length > 0) {
@@ -102,7 +110,7 @@
             }
                 
         
-            <div [routerLink]="['/cart']" (click)="$event.stopPropagation()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
+            <div [routerLink]="['/cart']" (click)="$event.stopPropagation()" (click)="closePopUps()" class="absolute top-16 -left-36 transition-all duration-300 bg-slate-800/95 shadow-2xl z-30 
             border-0 border-t-4 
         border-red-700 flex flex-col w-64 h-auto rounded-xl justify-between p-5"
         [class.opacity-0]="!expandCart" [class.pointer-events-none]="!expandCart">
@@ -136,26 +144,32 @@
         </div>
 
         <div class="flex relative">
-            <img (click)="toggleProfile($event)" src="../../assets/icons/user.png" class="h-auto w-14 relative z-20">
+            <img (click)="toggleProfile($event)" [src]="apiService.backendURL + 'images/user/' + userData.userProfile().id"
+             class="h-12 w-12 relative rounded-full z-20 object-cover">
 
             
-                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition-all duration-300 bg-slate-800/80 shadow-2xl z-30 
+                <div (click)="$event.stopPropagation()" class="absolute top-16 -left-24 transition-all duration-300 bg-slate-800/95 shadow-2xl z-30 
                 border-0 border-t-4 
             border-red-700 flex flex-col min-w-40 h-auto rounded-xl justify-between p-10 py-5"
             [class.opacity-0]="!expandProfile" [class.pointer-events-none]="!expandProfile">
             
                     @if (userData.userProfile().email === ""){
-                        <p [routerLink]="['/login']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log In</p>
+                        <p (click)="closePopUps()" [routerLink]="['/login']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log In</p>
                     }@else {
-                        <p [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
+                        <p (click)="closePopUps()" [routerLink]="['/profile']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Profile</p>
                     }
                     
-                    <p [routerLink]="['/orders']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
-                    <p [routerLink]="['/wishlist']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
-                    <p [routerLink]="['/support']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Support</p>
+                    <p [ngClass]="{'hidden': !isCustomer()}" (click)="closePopUps()"
+                    [routerLink]="['/orders']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Orders</p>
+                    
+                    <p [ngClass]="{'hidden': !isCustomer()}" (click)="closePopUps()"
+                    [routerLink]="['/wishlist']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Wishlist</p>
+                    
+                    <p [ngClass]="{'hidden': !isCustomer()}" (click)="closePopUps()"
+                    [routerLink]="['/support']" class="font-exo2 text-xl text-gray-300 hover:font-bold">Support</p>
                     
                     @if (userData.userProfile().email.length != 0) {
-                        <p (click)="logout()" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
+                        <p (click)="logout()" (click)="closePopUps()" class="font-exo2 text-xl text-gray-300 hover:font-bold">Log Out</p>
                     }
 
                 </div>

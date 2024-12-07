@@ -1,1 +1,39 @@
-<p>vendor-dashboard works!</p>
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    @if (vendorProfileData().approvalStatus.toString() === "APPROVED") {
+        
+        <p class="text-6xl mt-10  ml-2 font-bebas">Dashboard</p>
+        <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+        medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
+
+           
+
+        </div>
+
+    }@else if (vendorProfileData().approvalStatus.toString() === "PENDING"){
+
+        <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+        medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
+
+            <p class="text-6xl font-bebas p-5">We are processing your application</p>
+            <p class="text-4xl p-5 font-bebas">Thank you for your patience!</p>
+
+        </div>
+
+
+    }@else {
+        <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+        medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
+
+            <p class="text-6xl font-bebas">Sorry, you have not been allowed to join our business</p>
+            <p class="text-4xl p-5 font-bebas">Please reach out to us if you think this is a mistake</p>
+
+        </div>
+    }
+
+
+        
+
+</section>
