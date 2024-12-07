@@ -1,8 +1,8 @@
-import { Component, inject, Inject, signal } from '@angular/core';
+import { Component, inject, Inject, OnInit, signal } from '@angular/core';
 import { UserDataService } from '../services/user-data.service';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { CartItemDTO, ProductDTO } from '../models';
 
@@ -13,11 +13,12 @@ import { CartItemDTO, ProductDTO } from '../models';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
 
 
   
   userData = inject(UserDataService);
+  route: ActivatedRoute = inject(ActivatedRoute);
   apiService = inject(ApiService);
   router = inject(Router);
 
@@ -32,6 +33,11 @@ export class HeaderComponent {
 
   searchList = signal<ProductDTO[]>([]);
   cartList = signal<CartItemDTO[]>([]);
+
+  ngOnInit(): void {
+    // add profile getting steps
+  }
+
 
   toggleCart(event: MouseEvent){
     event.stopPropagation();
@@ -64,19 +70,20 @@ export class HeaderComponent {
     
   }
 
-  search(event: MouseEvent){
+  search(event: MouseEvent | undefined){
     
-    event.stopPropagation();
+    event?.stopPropagation();
     this.expandCart = false;
     this.expandProfile = false;
     if (this.searchTerm.trim() !== ""){
-      this.router.navigate(['/search']);
+      this.router.navigate(['/search/'+this.searchTerm.trim()]);
       this.expandSearch = false;
     }
     
   }
 
   preFetch(){ // prefetches data and populates popup of search box
+    console.log(this.searchList());
     if (this.searchTerm.trim().length > 0){
       this.apiService.getSearchPreview(this.searchTerm.trim()).subscribe( list =>{
         if (list){
@@ -90,6 +97,8 @@ export class HeaderComponent {
 
         }else{
           console.log("No products found");
+          this.searchList.set([]);
+          this.expandSearch = false;
         }
 
       });

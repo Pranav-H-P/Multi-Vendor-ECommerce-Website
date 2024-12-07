@@ -1,1 +1,63 @@
-<p>search-page works!</p>
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col items-start p-8 gap-6 large:p-20 large:px-[5%] relative">
+        
+        <p class="text-4xl small:text-5xl medium:text-6xl font-bebas">Results for "{{previousSearchTerm()}}"</p>
+
+        <div class="flex flex-col  gap-5 w-full">
+            <div class="flex relative items-center">
+                <input class="rounded-2xl p-2 text-lg w-[100%]" placeholder="Search" type="text" 
+                [(ngModel)] = "currentSearchTerm"
+                (keydown.enter)="getSearch()">
+
+                <img (click)="getSearch()" class="w-10 h-10 absolute right-0 rounded-full p-2 hover:bg-black/15 " src="../../assets/icons/search.png">
+            </div>
+
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 w-28 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="toggleFilters()">
+                Filters
+                <img src="../../assets/icons/searchFilter.png" class="w-6 h-6">
+            </button>
+            
+        </div>
+
+        <div class="flex-col transition-all duration-300 small:absolute bg-slate-300 p-5 h-max w-max rounded-2xl"
+            [ngClass]="{'opacity-0 pointer-events-none fixed duration-0 bottom-0': !showFilter(), 'flex opacity-100': showFilter()}">
+                <p>Filters</p>
+        </div>
+
+    </div>
+
+    <div class="flex py-10 transition-all duration-300 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20">
+    
+
+        <div class="flex flex-col p-3 gap-5 medium:w-[100%]">
+                
+            @for (item of searchResults(); track $index) {
+                
+                <app-product-card [productData]="item" [bottomText]="false"></app-product-card>
+
+            }@empty {
+                @if (searchPageNo() == 0) {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No Products Found!</p>
+                }@else {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">You Have Reached The End</p>
+                }
+                
+            }
+
+            <div class="mt-6 flex gap-3">
+                <button (click)="prevSearchPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Previous</button>
+                <button (click)="nextSearchPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Next</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</section>

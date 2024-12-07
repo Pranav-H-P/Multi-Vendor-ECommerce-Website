@@ -63,7 +63,7 @@ export class ProductPageComponent implements OnInit{
   ngOnInit(){
     
     this.route.params.subscribe(params => {
-      console.log("init")    
+      
       this.productImageLink = this.apiService.backendURL + 'images/product/';
       this.productId.set(params['id']);
       this.lastPageNo = -1;
@@ -188,18 +188,24 @@ export class ProductPageComponent implements OnInit{
     }).format(value);
   }
 
+  activateToast(msg: string,success: boolean){
+    this.toastVisible.set(true);
+    this.toastMessage.set(msg);
+    this.toastSuccess.set(success);
+    
+    setTimeout(() => {
+      this.toastVisible.set(false);
+      }, this.toastDuration);
+  }
+
   addToCart(){
     if (this.userService.userEmail() === ""){
-      this.toastVisible.set(true);
-      this.toastMessage.set("Added to Cart!");
-      this.toastSuccess.set(true);
-      
-      setTimeout(() => {
-        this.toastVisible.set(false);
-        }, this.toastDuration);
-      //this.router.navigate(['login']);
+
+      this.router.navigate(['login']);
+
     }else{
       // add cart api logic
+      this.activateToast("Added to cart!", true);
     }
   }
 

@@ -8,6 +8,7 @@ import { WishlistPageComponent } from './wishlist-page/wishlist-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { VendorPageComponent } from './vendor-page/vendor-page.component';
 import { SupportPageComponent } from './support-page/support-page.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,9 @@ export const routes: Routes = [
     {
         path: "support",
         component: SupportPageComponent
+    },{
+        path: "search/:term",
+        component: SearchPageComponent
     },
     {
         path: "**",
