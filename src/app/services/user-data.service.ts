@@ -3,7 +3,7 @@ import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
 import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
 
@@ -26,6 +26,7 @@ export class UserDataService {
   
   backendURL = "";
   
+  cartLength = signal(0);
   
   userProfile = signal<UserProfile>({
     name: "",
@@ -56,7 +57,13 @@ export class UserDataService {
               if (data){
 
                 this.userProfile.set(data);
-                
+                this.getCart().subscribe( resp =>{
+                  if (resp){
+                    this.cartLength.set(resp.length);
+                  }
+                }
+
+                ); // for header updation
                 this.router.navigate(['/home']);
   
               }else{
@@ -309,7 +316,17 @@ export class UserDataService {
   addToCart(item: CartSubmit){
     return this.http.post<string>(this.backendURL + "customer/addtocart", item,
       {responseType: 'text' as 'json'}
-    ).pipe(
+    
+    ).pipe(tap(response => {
+      
+      this.getCart().subscribe( response=>{
+        if (response){
+          this.cartLength.set(response.length); // for header icon to update
+
+        }
+      });
+      
+      }),
       catchError((error) => {
         console.log(error);
         return of(null);
@@ -331,7 +348,11 @@ export class UserDataService {
 
   getCart(){
     return this.http.get<CartItemDTO[]>(this.backendURL + "customer/getcart")
-    .pipe(
+    .pipe(tap(response => {
+
+          this.cartLength.set(response.length); // for header icon to update
+
+      }),
       catchError((error) => {
         console.log(error);
         return of(null);

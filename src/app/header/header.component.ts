@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit{
   searchTerm = "";
 
   searchList = signal<ProductDTO[]>([]);
-  cartList = signal<CartItemDTO[]>([]);
+  
 
   toastDuration = 3000;
   toastVisible = signal(false);
@@ -42,26 +42,9 @@ export class HeaderComponent implements OnInit{
   toastSuccess = signal(true);
 
   ngOnInit(): void {
-    // add profile getting steps
+    
   }
 
-
-  toggleCart(event: MouseEvent){
-    event.stopPropagation();
-
-    if (!this.expandCart){ // to be opened
-     ;
-
-      this.cartSum = 0;
-      this.cartList().forEach(item => {
-        this.cartSum += item.product.price * item.quantity;
-      });
-
-    }
-    this.expandCart = !this.expandCart;
-    this.expandProfile = false;
-    this.expandSearch = false;
-  }
 
   toggleProfile(event: MouseEvent){
     event.stopPropagation();

@@ -18,6 +18,7 @@ import { vendorGuard } from './guards/vendor.guard';
 import { homepageGuard } from './guards/homepage.guard';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { PaymentGatewayComponent } from './payment-gateway/payment-gateway.component';
 
 export const routes: Routes = [
     {
@@ -95,6 +96,12 @@ export const routes: Routes = [
     {
         path: "profile",
         component: ProfilePageComponent
+    },
+    {
+        path: "payment",
+        component: PaymentGatewayComponent,
+        canActivate: [loginGuard]
+
     },
     {
         path: "**",

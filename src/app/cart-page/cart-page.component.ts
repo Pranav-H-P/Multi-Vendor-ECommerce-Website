@@ -77,13 +77,9 @@ export class CartPageComponent implements OnInit{
 
   checkOut(){
 
+    this.router.navigate(['/payment']);
+
   }
-
-
-
-
-
-
 
 
 
