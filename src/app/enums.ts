@@ -23,3 +23,8 @@ export enum VendorApprovalStatus{
     PENDING,
     REJECTED
 }
+
+export enum ReportType{
+    SALES,
+    VISITS
+}

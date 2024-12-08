@@ -8,11 +8,12 @@
         
         <div class="relative w-52 h-auto extraSmall:w-60 medium:w-72">
 
-            <img [src]="apiService.backendURL + 'images/product/' +
-            productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
-            class="h-auto w-auto rounded-2xl object-cover"
-            [ngClass]="{'opacity-45':productData.stock == 0}">
-
+            @if(imageList()[imagePick] !== undefined){
+                <img [src]="apiService.backendURL + 'images/product/' +
+                productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
+                class="h-auto w-auto rounded-2xl object-cover"
+                [ngClass]="{'opacity-45':productData.stock == 0}">
+            }
             <div class="flex flex-col absolute bottom-0 left-0 bg-red-400/60 m-2 rounded-xl pointer-events-none">
                 
                 @if (productData.stock == 0){
@@ -34,14 +35,14 @@
     </div>
 }@else {
     <div class="flex justify-center w-32 h-32 extraSmall:w-32 extraSmall:h-32 medium:w-40 medium:h-40 p-1 bg-red-500 
-        rounded-2xl overflow-hidden transition-all hover:scale-90 relative" >
-        
-        <img [src]="apiService.backendURL + 'images/product/' +
-        productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
-        class="h-auto w-auto rounded-2xl object-cover"
-        [routerLink]="'/product/' + productData.productId"
-        [ngClass]="{'opacity-45': thisProd || productData.stock == 0}">
-
+        rounded-2xl overflow-hidden transition-all hover:scale-95 relative" >
+        @if(imageList()[imagePick] !== undefined){
+            <img [src]="apiService.backendURL + 'images/product/' +
+            productData.productId + '/' + imageList()[imagePick]"  [alt]="productData.productName"
+            class="h-auto w-auto rounded-2xl object-cover"
+            [routerLink]="'/product/' + productData.productId"
+            [ngClass]="{'opacity-45': thisProd || productData.stock == 0}">
+        }
         
 
 

@@ -1,7 +1,7 @@
 import { Component, HostListener, Inject, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { ProductDTO, ReviewCriteriaDTO, ReviewDTO } from '../models';
+import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, WishListItem } from '../models';
 import { RatingStarsComponent } from "../reusable/rating-stars/rating-stars.component";
 import { UserDataService } from '../services/user-data.service';
 import { ProductCardComponent } from '../reusable/product-card/product-card.component';
@@ -41,6 +41,8 @@ export class ProductPageComponent implements OnInit{
   reviewPageNo = signal(0);
   reviewPerPage = signal(6);
 
+  wishListStatus = signal(false);
+
   imageList = signal<string[]>([]);
   similarProducts = signal<ProductDTO[]>([]);
   userReviews = signal<ReviewDTO[]>([]);
@@ -70,10 +72,53 @@ export class ProductPageComponent implements OnInit{
       this.similarPageNo.set(0);
       this.loadProductData();
       this.loadUserReviews();
+
+      if (this.userService.userProfile().email !== ""){
+        this.userService.checkWishlistItem(this.productId()).subscribe(
+          response =>{
+            if (response){
+              this.wishListStatus.set(true);
+            }else{
+              this.wishListStatus.set(false);
+            }
+          }
+        );
+      }
       
     });
     
   }
+
+
+  toggleWishlist(){
+    
+    
+    const wLItem: WishListItem = {
+      userId: this.userService.userProfile().id,
+      productId: this.productId(),
+      dateAdded: new Date()
+    }
+
+    if (this.wishListStatus()){ // removing
+      this.userService.removeWishListItem(wLItem).subscribe( resp =>{
+        if (resp){
+          console.log(resp)
+          this.wishListStatus.set(false);
+        }
+      });
+
+    }else{
+      this.userService.addWishListItem(wLItem).subscribe( resp =>{
+        if (resp){
+          console.log(resp)
+          this.wishListStatus.set(true);
+        }
+      });
+
+    }
+    
+  }
+
 
   loadSimilarProducts(perPage: number){ 
     

@@ -1,4 +1,4 @@
-import { Rating, SearchSortOrder, UserRole, VendorApprovalStatus } from "./enums";
+import { Rating, ReportType, SearchSortOrder, UserRole, VendorApprovalStatus } from "./enums";
 
 export interface AuthRequestDTO{
     email: string;
@@ -100,3 +100,17 @@ export interface UserProfile{
     passwordHash?: string; // gets removed before sending
 
 }
+
+export interface WishListItem{
+    userId: number;
+    productId: number;
+    dateAdded: Date;
+}
+
+export interface Report{
+    vendorId: number;
+    type: ReportType;
+    data: string;
+    generatedDate: Date;
+}
+

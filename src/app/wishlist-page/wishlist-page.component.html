@@ -1,1 +1,39 @@
-<p>wishlist-page works!</p>
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
+        
+        <p class="text-5xl font-bebas">Wishlist</p>
+
+    </div>
+
+
+    <div class="flex py-10 transition-all duration-300 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20">
+    
+
+        <div class="flex flex-col p-3 gap-5 medium:w-[100%]">
+                
+            @for (item of wishList(); track $index) {
+                
+                <app-product-card [productData]="item" [expanded]="true"></app-product-card>
+                
+
+            }@empty {
+                @if (pageNo() == 0) {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No Products Found!</p>
+                }@else {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">You Have Reached The End</p>
+                }
+                
+            }
+
+            <div class="mt-6 flex gap-3">
+                <button (click)="prevPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Previous</button>
+                <button (click)="nextPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Next</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>

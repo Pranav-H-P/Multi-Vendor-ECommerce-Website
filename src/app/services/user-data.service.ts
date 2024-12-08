@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, RegisterDTO, UserProfile } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, ProductDTO, RegisterDTO, UserProfile, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { ApiService } from './api.service';
@@ -54,7 +54,7 @@ export class UserDataService {
 
             this.getUserData().subscribe(data=>{
               if (data){
-                console.log(data);
+
                 this.userProfile.set(data);
                 
                 this.router.navigate(['/home']);
@@ -204,7 +204,7 @@ export class UserDataService {
       
       formData.append("id", productId.toString());
   
-      return this.http.post<string>(this.backendURL + "images/uploadProductimage", formData,
+      return this.http.post<string>(this.backendURL + "images/uploadproductimage", formData,
         {responseType: 'text' as 'json'}
       ).pipe(
         catchError((error) => {
@@ -239,6 +239,48 @@ export class UserDataService {
       return of(null);
     }
 
+  }
+
+  addWishListItem(item: WishListItem){
+    return this.http.post<string>(this.backendURL + "customer/addwishlist", item,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  removeWishListItem(item: WishListItem){
+    return this.http.post<string>(this.backendURL + "customer/removewishlist", item,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+  getWishList(pageNo: number, perPage: number){
+    return this.http.get<ProductDTO[]>(this.backendURL + "customer/getwishlist/" + pageNo + "/" + perPage,)
+        .pipe(
+          catchError((error) => {
+            console.log(error);
+            return of(null);
+          })
+    )
+  }
+  checkWishlistItem(prodId: number){
+    return this.http.get<string>(this.backendURL + "customer/wishlistexists/" + prodId,
+      {responseType: 'text' as 'json'}
+    )
+        .pipe(
+          catchError((error) => {
+            console.log(error);
+            return of(null);
+          })
+    )
   }
 }
 

@@ -151,8 +151,7 @@ export class HeaderComponent implements OnInit{
 
   isCustomer(){
 
-    return !(this.userData.userProfile().role?.toString() === 'VENDOR'
-            || this.userData.userProfile().role?.toString() === 'ADMIN')
+    return this.userData.userProfile().role?.toString() === "CUSTOMER"
   }
 
   
