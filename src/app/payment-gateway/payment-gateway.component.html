@@ -1,11 +1,79 @@
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+
 <section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
 
     <div class="flex flex-col mt-20 ">
 
-        <p class="text-4xl font-bebas mx-auto">P Pay</p>
-
         <div class="flex gap-10 bg-slate-300 p-6 py-14 rounded-lg flex-col items-center extraSmall:w-96 mx-auto">
-        
+            
+
+            <div class="flex flex-col gap-5 p-16 small:p-2 rounded-2xl mx-auto bg-slate-200">
+
+
+                @if(cartItems().length > 0){
+                    <p class="text-2xl font-bebas">Bill</p>
+                }
+    
+                @for (item of cartItems(); track $index) {
+    
+                    <div class="flex">
+    
+                        <p class="text-2x">{{item.product.price}} x {{item.quantity}} = {{item.product.price*item.quantity}}</p>
+    
+    
+                    </div>
+    
+    
+    
+                }
+    
+                
+    
+                <p class="text-2xl font-bebas">{{formatToIndianCurrency(totalCost()) }}</p>
+    
+                    
+                
+            
+            </div>
+
+
+            
+            <p class="text-4xl font-bebas mx-auto">Please enter your banking details below</p>
+
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Holder Name" 
+                type="text" 
+                [(ngModel)] = "holderName">
+            </div>
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Card Number" 
+                type="text" 
+                [(ngModel)] = "cardNo">
+            </div>
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="CVV" 
+                type="text" 
+                [(ngModel)] = "cvv">
+            </div>
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Expiry" 
+                type="text" 
+                [(ngModel)] = "expiry">
+            </div>
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="pay()">Pay</button>
+
+
         </div>
     </div>
 </section>

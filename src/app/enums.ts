@@ -29,3 +29,8 @@ export enum ReportType{
     VISITS
 }
 
+export enum OrderStatus{
+    PLACED,
+    SHIPPED,
+    DELIVERED
+}

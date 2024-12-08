@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit, OrderDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
@@ -358,6 +358,41 @@ export class UserDataService {
         return of(null);
       })
     )
+  }
+  clearCart(){
+    return this.http.get<string>(this.backendURL + "customer/clearcart", 
+      {responseType: 'text' as 'json'}
+    ).pipe(tap(response => {
+
+      this.cartLength.set(0); // for header icon to update
+
+  }),
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  placeOrders(list: CartItemDTO[]){
+    return this.http.post<string>(this.backendURL + "customer/placeorder", list,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  getOrderList(pageNo: number, perPage: number){
+    return this.http.get<OrderDTO[]>(this.backendURL + "customer/getorder" + pageNo + "/" + perPage
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
   }
 }
 

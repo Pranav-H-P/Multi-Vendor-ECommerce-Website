@@ -1,4 +1,4 @@
-import { Rating, ReportType, SearchSortOrder, UserRole, VendorApprovalStatus } from "./enums";
+import { OrderStatus, Rating, ReportType, SearchSortOrder, UserRole, VendorApprovalStatus } from "./enums";
 
 export interface AuthRequestDTO{
     email: string;
@@ -129,4 +129,16 @@ export interface CartSubmit{ // just to initially populate the cart
     quantity: number;
     dateAdded: Date;
 
+}
+
+export interface OrderDTO{
+    id: number;
+    userId: number;
+    productId: number;
+    details: string;
+    amount: number;
+    status: OrderStatus;
+    orderDate: Date;
+    address: string;
+    productName: string;
 }
