@@ -95,7 +95,9 @@ export const routes: Routes = [
     },
     {
         path: "profile",
-        component: ProfilePageComponent
+        component: ProfilePageComponent,
+        canActivate: [loginGuard]
+
     },
     {
         path: "payment",

@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserDataService } from '../services/user-data.service';
 import { OrderDTO } from '../models';

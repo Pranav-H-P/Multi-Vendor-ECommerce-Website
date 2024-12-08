@@ -1,1 +1,43 @@
-<p>admin-dashboard works!</p>
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
+        
+        <p class="text-5xl font-bebas">Admin Dashboard</p>
+
+    </div>
+
+
+    <div class="flex flex-col w-auto bg-slate-300 rounded-xl gap-5 pb-20">
+    
+        <p class="text-4xl p-7">Vendor Approval List</p>
+
+        @for (item of pendingVendorList(); track $index) {
+            
+            <div class="flex flex-col p-5 m-2 small:m-10 bg-slate-200 rounded-xl gap-5">
+                
+                <p class="text-2xl text-bold">ID#{{item.id}}</p>
+                <p class="text-2xl text-bold">Name: {{item.name}}</p>
+                
+                <p>{{item.contactDetails}}</p>
+                <p>{{item.description}}</p>
+                <p>{{item.joinDate}}</p>
+                <div class="flex gap-14 small:gap-20">
+                    <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+                    flex justify-between items-center"
+                    (click)="approve(item)">Approve</button>
+                    <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+                    flex justify-between items-center"
+                    (click)="reject(item)">Reject</button>
+                </div>
+            </div>
+            
+
+            
+
+        }@empty {
+            <p class="text-4xl p-7">All done!</p>
+        }
+
+
+    </div>
+</section>

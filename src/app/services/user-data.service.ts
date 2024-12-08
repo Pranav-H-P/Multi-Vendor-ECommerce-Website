@@ -1,7 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { UserRole } from '../enums';
+import { UserRole, VendorApprovalStatus } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit, OrderDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit
+  , OrderDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, Vendor, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
@@ -394,6 +395,45 @@ export class UserDataService {
       })
     );
   }
+
+  getPendingVendors(){
+    return this.http.get<Vendor[]>(this.backendURL + "admin/vendorrequests"
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  
+  }
+
+  mutateVendor(vendor: Vendor){
+
+    return this.http.post<string>(this.backendURL + "admin/approvevendor", vendor,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  approveVendor(vendor: Vendor){
+
+    vendor.approvalStatus = VendorApprovalStatus.APPROVED;
+
+    return this.mutateVendor(vendor);
+  }
+
+  rejectVendor(vendor: Vendor){
+
+    vendor.approvalStatus = VendorApprovalStatus.REJECTED;
+
+    return this.mutateVendor(vendor);
+
+  }
+
 }
 
 
