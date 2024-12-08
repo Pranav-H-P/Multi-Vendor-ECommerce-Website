@@ -18,6 +18,7 @@ export class ProductCardComponent implements OnInit,OnChanges{
   @Input() thisProd = false; // to show effect that its this product (when appearing in similar prod results)
 
   @Input() quantity: number| undefined;
+  @Input() vendorMode = false; // to route to modification page when clicked by vendor
 
   imageList = signal<string[]>([]);
 

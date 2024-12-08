@@ -1,10 +1,16 @@
     
     
 @if (expanded){
+   
+
+
+    
     <div class="flex flex-col items-center 
     gap-5 medium:items-start medium:flex-row
     bg-slate-200 p-5 py-8 rounded-xl transition-all hover:scale-95"
-    [routerLink]="'/product/' + productData.productId">
+    [routerLink]=" vendorMode ? '/vendor/modify/'+productData.productId :'/product/' + productData.productId ">
+
+
         
         <div class="relative w-52 h-auto extraSmall:w-60 medium:w-72">
 

@@ -5,9 +5,33 @@
     @if (vendorProfileData().approvalStatus.toString() === "APPROVED") {
         
         <p class="text-6xl mt-10  ml-2 font-bebas">Dashboard</p>
+
         <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
         medium:mt-5 small:p-16 items-center medium:items-start justify-around gap-5 pb-20">
+        <p class="text-4xl mt-10  ml-2 font-bebas">List of products</p>
 
+        <div class="flex gap-14 small:gap-20">
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="prevPage()">Previous</button>
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="nextPage()">Next</button>
+        </div>
+        <button class="fixed rounded-2xl text-xl hover:bg-slate-900 p-5 bg-slate-700 text-white 
+            bottom-16 mx-auto medium:right-8 z-40"
+            [routerLink]="['/vendor/addnew']">Create New</button>
+
+        @for (item of productList(); track $index) {
+            <app-product-card [productData]="item" [vendorMode]="true" [expanded]="true"></app-product-card>
+        }@empty {
+            @if (pageNo() == 0) {
+                <p class="text-start mx-auto text-2xl">No Products Found!</p>
+            }@else {
+                <p class="text-start mx-auto text-2xl">End of List!</p>
+            }
+
+        }
            
 
         </div>

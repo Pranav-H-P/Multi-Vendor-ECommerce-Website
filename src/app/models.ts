@@ -142,3 +142,15 @@ export interface OrderDTO{
     address: string;
     productName: string;
 }
+
+export interface ProductType{
+    id?: number;
+    vendorId: number;
+    name: string;
+    description: string;
+    price: number;
+    categoryId: number;
+    stock: number;
+    createdDate: Date;
+    sales: number;
+}

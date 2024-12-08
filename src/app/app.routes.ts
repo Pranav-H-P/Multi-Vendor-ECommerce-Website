@@ -19,6 +19,7 @@ import { homepageGuard } from './guards/homepage.guard';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { PaymentGatewayComponent } from './payment-gateway/payment-gateway.component';
+import { VendorCreateProductComponent } from './vendor-create-product/vendor-create-product.component';
 
 export const routes: Routes = [
     {
@@ -91,6 +92,16 @@ export const routes: Routes = [
     {
         path: "vendor/dashboard",
         component: VendorDashboardComponent,
+        canActivate: [vendorGuard]
+    },
+    {
+        path: "vendor/addnew",
+        component: VendorCreateProductComponent,
+        canActivate: [vendorGuard]
+    },
+    {
+        path: "vendor/modify/:id",
+        component: VendorCreateProductComponent,
         canActivate: [vendorGuard]
     },
     {

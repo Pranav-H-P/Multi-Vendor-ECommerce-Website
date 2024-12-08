@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { UserRole, VendorApprovalStatus } from '../enums';
 import { LocalStorageService } from './local-storage.service';
 import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit
-  , OrderDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, Vendor, WishListItem } from '../models';
+  , OrderDTO, ProductDTO, ProductType, RegisterDTO, ReviewType, UserProfile, Vendor, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
@@ -432,6 +432,17 @@ export class UserDataService {
 
     return this.mutateVendor(vendor);
 
+  }
+
+  saveProduct(prod: ProductType){
+    return this.http.post<string>(this.backendURL + "product/save", prod,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
   }
 
 }

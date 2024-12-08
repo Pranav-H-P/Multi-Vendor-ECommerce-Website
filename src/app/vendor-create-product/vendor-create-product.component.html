@@ -1,0 +1,70 @@
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col mt-20 ">
+        
+
+        <p class="text-4xl font-bebas mx-auto">Log In</p>
+
+        <div class="flex gap-10 bg-slate-300 p-6 py-14 rounded-lg flex-col items-center extraSmall:w-96 mx-auto">
+            
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Name of product" 
+                type="text" 
+                [(ngModel)] = "pName">
+            </div>
+
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="description of product" 
+                type="text" 
+                [(ngModel)] = "description">
+            </div>
+
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="category of product" 
+                type="text" 
+                [(ngModel)] = "categoryId">
+            </div>
+
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Price of product" 
+                type="text" 
+                [(ngModel)] = "price">
+            </div>
+
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Stock of product" 
+                type="text" 
+                [(ngModel)] = "stock">
+            </div>
+            <div class="relative w-72">
+                <input class="p-2 max-w-72 text-lg
+                placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 
+                focus:bg-none pr-6" placeholder="Sales of product" 
+                type="text" 
+                [(ngModel)] = "sales">
+            </div>
+
+            
+            <button class="rounded-2xl text-xl hover:bg-slate-900 p-3 px-5 bg-slate-700 text-white 
+            flex justify-between items-center"
+            (click)="submit()">Submit!</button>
+
+        </div>
+        
+       
+    </div>
+
+
+</section>

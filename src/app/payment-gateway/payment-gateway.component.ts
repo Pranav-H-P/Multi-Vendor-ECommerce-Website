@@ -95,7 +95,7 @@ export class PaymentGatewayComponent implements OnInit{
                 
     
                 setTimeout(() => {
-                  this.router.navigate(['/home']);;
+                  this.router.navigate(['/home']);
                   }, this.toastDuration);
     
               }else{
