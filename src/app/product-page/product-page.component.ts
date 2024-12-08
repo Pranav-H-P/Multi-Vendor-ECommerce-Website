@@ -1,21 +1,22 @@
 import { Component, HostListener, Inject, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, WishListItem } from '../models';
+import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, ReviewType, WishListItem } from '../models';
 import { RatingStarsComponent } from "../reusable/rating-stars/rating-stars.component";
 import { UserDataService } from '../services/user-data.service';
 import { ProductCardComponent } from '../reusable/product-card/product-card.component';
-import { SearchSortOrder } from '../enums';
+import { Rating, SearchSortOrder } from '../enums';
 import { ReviewCardComponent } from "../reusable/review-card/review-card.component";
 import { NgClass } from '@angular/common';
 import { ToastComponent } from "../reusable/toast/toast.component";
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
   imports: [RouterModule, RatingStarsComponent, ProductCardComponent,
-    ReviewCardComponent, NgClass, ToastComponent],
+    ReviewCardComponent, NgClass, ToastComponent, FormsModule],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css'
 })
@@ -42,10 +43,17 @@ export class ProductPageComponent implements OnInit{
   reviewPerPage = signal(6);
 
   wishListStatus = signal(false);
+  openReviewWriter = signal(false);
+
+  purchased = signal(false); // to check if person has actually bought the item before writing review
 
   imageList = signal<string[]>([]);
   similarProducts = signal<ProductDTO[]>([]);
   userReviews = signal<ReviewDTO[]>([]);
+
+
+  newComment = "";
+  newRating = Rating.SATISFACTORY;
 
   byAscending = false;
 
@@ -78,6 +86,8 @@ export class ProductPageComponent implements OnInit{
           response =>{
             if (response){
               this.wishListStatus.set(true);
+              this.checkIfOrdered() // check if user has bought product to allow review writing
+
             }else{
               this.wishListStatus.set(false);
             }
@@ -87,6 +97,22 @@ export class ProductPageComponent implements OnInit{
       
     });
     
+  }
+
+
+  setRating(val: number){
+    this.newRating = val;
+    console.log(this.newRating);
+  }
+
+  toggleWriteReview(){
+
+    if (!this.purchased()){
+      this.activateToast("You need to purchase the item before reviewing!", false);
+      return;
+    }
+
+    this.openReviewWriter.update(value => !value);
   }
 
 
@@ -143,6 +169,35 @@ export class ProductPageComponent implements OnInit{
     }
       
     );
+  }
+
+  submitUserReview(){
+    if (this.newRating == 0){
+      this.activateToast("You need to choose a rating!", false);
+      return;
+    }else{
+      const reviewObj: ReviewType = {
+        userId: this.userService.userProfile().id,
+        productId: this.productId(),
+        rating: this.newRating,
+        comment:this.newComment,
+        reviewDate: new Date() 
+      }
+
+      this.userService.postReview(reviewObj).subscribe(
+        resp=>{
+          if (resp){
+            this.activateToast("Successfully uploaded!", true);
+            this.newComment = "";
+            this.newRating = 0;
+            this.openReviewWriter.set(false);
+
+          }else{
+            this.activateToast("Something went wrong!", false);
+          }
+        }
+      );
+    }
   }
 
   loadUserReviews(){
@@ -327,6 +382,16 @@ export class ProductPageComponent implements OnInit{
 
   }
   
+  checkIfOrdered(){
+    this.userService.checkPurchase(this.productId()).subscribe(response =>{
+      if (response){
+        this.purchased.set(true);
+      }else{
+        this.purchased.set(false);
+      }
+    });
+
+  }
   
   
 

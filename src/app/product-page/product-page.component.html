@@ -126,7 +126,9 @@
     <div class="flex py-10 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
     medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20">
 
-        <p class="ml-4 text-4xl text-left mr-auto font-bebas">User Reviews</p>
+        <p class="ml-4 text-4xl text-left mr-auto font-bebas ">User Reviews</p>
+
+
         <p class="ml-4 text-2xl text-left mr-auto font-bebas">Sort By</p>
 
         <div class="flex px-6 medium:w-[100%] justify-between">
@@ -147,6 +149,31 @@
             (click)="setByAscending(true)">{{orderText[1]}}</button>
         </div>
 
+        <div class="flex flex-col medium:w-full">
+            <button class="text-2xl font-bebas m-2  text-white rounded-2xl 
+            hover:bg-slate-600 bg-slate-700 p-3"
+            (click)="toggleWriteReview()">Write a review!</button>
+        </div>
+
+        @if(purchased()){
+            
+            <div class="flex-col transition-all gap-5 duration-300 bg-slate-300 items-center h-max w-full rounded-2xl
+                "
+                [ngClass]="{'opacity-0 pointer-events-none fixed transition-none bottom-0 overflow-hidden': !openReviewWriter(),
+                'flex opacity-100': openReviewWriter()}">
+
+                <app-rating-stars [modifiable]="true" (ratingSelected)="setRating($event)"></app-rating-stars>
+
+                <textarea [(ngModel)]="newComment"
+                class="rounded-2xl p-2 text-lg w-80vw w-[80%] my-20 resize-none min-h-40"
+                placeholder="Start typing"></textarea>
+
+                <button class="text-2xl font-bebas m-2  text-white rounded-2xl 
+                hover:bg-slate-600 bg-slate-700 p-3"
+                (click)="submitUserReview()">Submit!</button>
+
+            </div>
+        }
         <div class="flex flex-col p-3 medium:w-[100%]">
             
             @for (item of userReviews(); track $index) {

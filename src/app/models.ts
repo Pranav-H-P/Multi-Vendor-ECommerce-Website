@@ -114,3 +114,10 @@ export interface Report{
     generatedDate: Date;
 }
 
+export interface ReviewType{
+    productId: number;
+    userId: number;
+    rating: Rating;
+    comment: string;
+    reviewDate: Date;
+}

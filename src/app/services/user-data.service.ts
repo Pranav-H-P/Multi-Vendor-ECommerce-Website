@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, ProductDTO, RegisterDTO, UserProfile, WishListItem } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { ApiService } from './api.service';
@@ -273,6 +273,30 @@ export class UserDataService {
   }
   checkWishlistItem(prodId: number){
     return this.http.get<string>(this.backendURL + "customer/wishlistexists/" + prodId,
+      {responseType: 'text' as 'json'}
+    )
+        .pipe(
+          catchError((error) => {
+            console.log(error);
+            return of(null);
+          })
+    )
+  }
+
+  postReview(reviewObj: ReviewType){
+    return this.http.post<string>(this.backendURL + "customer/postreview", reviewObj,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+
+  }
+
+  checkPurchase(prodId: number){
+    return this.http.get<ProductDTO[]>(this.backendURL + "customer/checkpurchase/" +prodId,
       {responseType: 'text' as 'json'}
     )
         .pipe(

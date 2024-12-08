@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Signal, signal, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, Signal, signal, SimpleChanges } from '@angular/core';
 import { ProductDTO } from '../../models';
 import { Rating } from '../../enums';
 
@@ -15,7 +15,7 @@ export class RatingStarsComponent{
   @Input() useProductData = false; // set as true to use DTO, else it will check for starVal
   @Input() starVal : Rating = Rating.SATISFACTORY;
   @Input() modifiable = false;
-
+  @Output() ratingSelected = new EventEmitter<number>();
 
   finalCount = 0; // zero indexed for compatibility with enum
 
@@ -25,9 +25,9 @@ export class RatingStarsComponent{
       this.finalCount = 0;
     }else{
       this.finalCount = id;
+      
     }
-
-    
+    this.ratingSelected.emit(this.finalCount);
   }
 
 
