@@ -23,6 +23,8 @@ export class VendorCreateProductComponent implements OnInit{
 
   categoryList = signal<Category[]>([]);
 
+  selectedFiles: File[] | null = null;
+
   toastDuration = 3000;
   toastVisible = signal(false);
   toastMessage = signal("Testing");
@@ -55,13 +57,55 @@ export class VendorCreateProductComponent implements OnInit{
         });
 
       });
+    }else{
+      this.activateToast("images can only be added during modification", true);
     }
 
       
   }
 
 
+  onFileChange(event: any){
+    this.selectedFiles = event.target.files;
+  }
+
+
+  uploadImages(){
+
+    if (this.selectedFiles && this.productId() != -1) {
+      
+      this.userDataService.uploadProductPictures(this.selectedFiles, this.productId()).subscribe(response=>{
+        if (response){
+          this.activateToast("Successfully uploaded images!", true);
+
+          setTimeout(() => {
+            this.router.navigate(['/vendor/dashboard'])
+            }, this.toastDuration);
+
+          
+        }else{
+          this.activateToast("images could not be uploaded!", false);
+        }
+      })
+
+      
+
+
+
+    }else{
+      
+    setTimeout(() => {
+      this.router.navigate(['/vendor/dashboard'])
+      }, this.toastDuration);
+    }
+    
+    
+  }
+
+
+
   submit(){
+
 
     if (this.pName.trim() == ""){
       this.activateToast("Details cant be blank!", false);
@@ -94,10 +138,9 @@ export class VendorCreateProductComponent implements OnInit{
     this.userDataService.saveProduct(prod).subscribe(p=>{
       if (p){
         this.activateToast("Successfully created/modified product!", true);
-        setTimeout(() => {
-          this.router.navigate(['/vendor/dashboard'])
-          }, this.toastDuration);
-        
+
+        // uploading images seperately
+        this.uploadImages()
         
         
       }else{

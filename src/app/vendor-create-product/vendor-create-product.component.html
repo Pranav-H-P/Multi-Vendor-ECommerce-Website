@@ -9,6 +9,8 @@
 
         <div class="flex gap-10 bg-slate-300 p-6 py-14 rounded-lg flex-col items-center extraSmall:w-96 mx-auto">
             
+            <input type="file" (change)="onFileChange($event)" multiple />
+
             <div class="relative w-72">
                 <input class="p-2 max-w-72 text-lg
                 placeholder-black/70 bg-slate-400 rounded-md border-slate-800 focus:outline-none 

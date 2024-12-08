@@ -204,11 +204,9 @@ export class UserDataService {
 
       const formData: FormData = new FormData();
 
-      files.forEach(
-        file =>{
-          formData.append('file', file, file.name);
-        }
-      );
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+      }
       
       formData.append("id", productId.toString());
   
