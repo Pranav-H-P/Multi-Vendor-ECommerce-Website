@@ -17,6 +17,8 @@ export class ProductCardComponent implements OnInit,OnChanges{
   @Input() expanded = true; // text and stuff will be at the bottom for product page cards etc, side for search
   @Input() thisProd = false; // to show effect that its this product (when appearing in similar prod results)
 
+  @Input() quantity: number| undefined;
+
   imageList = signal<string[]>([]);
 
   apiService = inject(ApiService);

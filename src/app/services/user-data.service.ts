@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { UserRole } from '../enums';
 import { LocalStorageService } from './local-storage.service';
-import { AuthRequestDTO, AuthResponseDTO, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
+import { AuthRequestDTO, AuthResponseDTO, CartItemDTO, CartSubmit, ProductDTO, RegisterDTO, ReviewType, UserProfile, WishListItem } from '../models';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { ApiService } from './api.service';
@@ -304,6 +304,38 @@ export class UserDataService {
             console.log(error);
             return of(null);
           })
+    )
+  }
+  addToCart(item: CartSubmit){
+    return this.http.post<string>(this.backendURL + "customer/addtocart", item,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  
+  }
+
+  deleteFromCart(item: CartItemDTO){
+    return this.http.post<string>(this.backendURL + "customer/deletefromcart", item,
+      {responseType: 'text' as 'json'}
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  getCart(){
+    return this.http.get<CartItemDTO[]>(this.backendURL + "customer/getcart")
+    .pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
     )
   }
 }

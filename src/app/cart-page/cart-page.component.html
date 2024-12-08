@@ -1,1 +1,75 @@
-<p>cart-page works!</p>
+<app-toast [success]="toastSuccess()" [message]="toastMessage()" [visible]="toastVisible()"></app-toast>
+
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-300 gap-10">
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
+        
+        <p class="text-5xl font-bebas">Cart</p>
+
+    </div>
+
+
+        <div class="flex flex-col gap-5 small:flex-row">
+            
+            <div class="flex flex-col gap-5 p-10 small:p-2">
+            @for (item of cartItems(); track $index) {
+                
+                <div class="relative">
+                    
+                    <app-product-card [expanded]="true" class="w-max" [productData]="item.product" [quantity]="item.quantity" ></app-product-card>
+                    <img src="../../assets/icons/cross.png" class="z-20 absolute top-0 right-0 w-10 h-10 opacity-50
+                    cursor-pointer hover:opacity-65" (click)="deleteItem($index)">
+
+                </div>
+                
+                
+                
+            }@empty {
+                
+                    <p class="text-4xl font-bebas">It's time to start shopping!</p>
+                    
+                
+                
+            }
+        </div>
+        <div class="flex flex-col gap-5 p-10 small:p-2 mx-auto">
+
+
+            @if(cartItems().length > 0){
+                <p class="text-2xl font-bebas">Bill</p>
+    }
+
+            @for (item of cartItems(); track $index) {
+
+                <div class="flex">
+
+                    <p class="text-2x">{{item.product.price}} x {{item.quantity}} = {{item.product.price*item.quantity}}</p>
+
+
+                </div>
+
+
+
+            }@empty {
+
+                    <p class="text-4xl font-bebas">It's time to start shopping!</p>
+
+
+
+}
+
+            @if(cartItems().length > 0){
+
+                <p class="text-2xl font-bebas">{{formatToIndianCurrency(totalCost()) }}</p>
+
+                <button (click)="checkOut()" class="rounded-2xl text-xl hover:bg-slate-900 p-3 w-28 bg-slate-700 text-white
+
+                flex justify-between items-center">Check Out!</button>
+            }
+        
+        </div>
+        
+
+    </div>
+
+
+</section>

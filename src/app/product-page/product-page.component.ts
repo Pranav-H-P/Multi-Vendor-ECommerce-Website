@@ -1,7 +1,7 @@
 import { Component, HostListener, Inject, inject, OnInit, signal} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
-import { ProductDTO, ReviewCriteriaDTO, ReviewDTO, ReviewType, WishListItem } from '../models';
+import { CartSubmit, ProductDTO, ReviewCriteriaDTO, ReviewDTO, ReviewType, WishListItem } from '../models';
 import { RatingStarsComponent } from "../reusable/rating-stars/rating-stars.component";
 import { UserDataService } from '../services/user-data.service';
 import { ProductCardComponent } from '../reusable/product-card/product-card.component';
@@ -304,8 +304,36 @@ export class ProductPageComponent implements OnInit{
       this.router.navigate(['login']);
 
     }else{
-      // add cart api logic
-      this.activateToast("Added to cart!", true);
+      
+      if (this.itemCount > 0 && this.itemCount <= (this.productData()?.stock ?? 0)){
+
+        const cartItem: CartSubmit = {
+          userId: this.userService.userProfile().id,
+          productId: this.productId(),
+          dateAdded: new Date(),
+          quantity: this.itemCount
+          
+        }
+        this.userService.addToCart(cartItem).subscribe( response=>{
+
+          if (response){
+            this.activateToast("Added to cart!", true);
+          }else{
+            this.activateToast("Failed to add to cart!", false);
+          }
+        });
+
+        
+      }else{
+        if(this.itemCount > 0){
+          this.activateToast("Unable to add to cart, You've selected too much", false)
+        }else{
+          this.activateToast("Please select more than 0", false)
+        }
+        
+      }
+
+      
     }
   }
 

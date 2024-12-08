@@ -30,6 +30,9 @@
             <app-rating-stars [useProductData]="true" [productData]="pdSignal"></app-rating-stars>
             
             <p class="font-bebas font-bold text-2xl">{{formatToIndianCurrency(productData.price)}}</p>
+            @if (quantity !== undefined){
+                <p class="font-bebas font-bold text-2xl">x {{ quantity}}</p>
+            }
         </div>
             
     </div>

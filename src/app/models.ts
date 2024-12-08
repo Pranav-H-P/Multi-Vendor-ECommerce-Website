@@ -20,6 +20,7 @@ export interface RegisterDTO{
 }
 
 export interface CartItemDTO{ 
+    cartId: number;
     userId: number;
     product: ProductDTO;
     quantity: number;
@@ -120,4 +121,12 @@ export interface ReviewType{
     rating: Rating;
     comment: string;
     reviewDate: Date;
+}
+
+export interface CartSubmit{ // just to initially populate the cart
+    userId: number;
+    productId: number;
+    quantity: number;
+    dateAdded: Date;
+
 }
