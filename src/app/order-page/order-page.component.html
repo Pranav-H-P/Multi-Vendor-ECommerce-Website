@@ -1,1 +1,59 @@
-<p>order-page works!</p>
+<section class="min-h-[90vh] font-exo2 flex flex-col small:p-5 bg-slate-200 gap-10">
+
+    <div class="flex flex-col items-center p-5 gap-6 medium:flex-row large:pt-20 large:px-[5%]">
+        
+        <p class="text-5xl font-bebas">Order Tracking</p>
+
+    </div>
+
+
+    <div class="flex py-10 transition-all duration-300 flex-col w-auto bg-slate-300 rounded-xl small:mx-10
+    medium:mt-5 small:p-16 medium:items-start justify-around gap-5 pb-20">
+    
+
+        <div class="flex flex-col p-3 gap-5 medium:w-[100%]">
+                
+            @for (item of orderList(); track $index) {
+                <div class="flex flex-col items-center 
+                gap-5 medium:items-start medium:flex-row
+                bg-slate-200 p-5 py-8 rounded-xl transition-all hover:scale-95 cursor-pointer"
+                [routerLink]="'/product/' + item.productId">
+                   
+                <div class="flex flex-col gap-2 extraSmall:flex-row w-[100%]">
+                    <div class="flex flex-col items-start gap-2 extraSmall:mr-auto">
+                        <p class="font-bebas text-3xl text-left truncate">Order ID: {{item.id}}</p>
+                        <p class="text-xl text-left truncate">{{item.productName}}</p>
+                        <p class="font-bebas font-bold text-2xl">{{formatToIndianCurrency(item.amount)}}</p>
+                        <p class="font-bebas font-bold text-2xl">{{item.details}}</p>
+                        
+                    </div>
+                    <div class="flex flex-col items-start gap-2 extraSmall:ml-auto">
+                        <p class="font-bebas text-3xl text-left truncate">Status: {{item.status}}</p>
+                        <p class="text-xl text-left truncate">{{item.orderDate}}</p>
+                        <p class="font-bebas font-bold text-2xl"> deliverying to: {{item.address}}</p>
+                        
+                    </div>
+                </div>
+                    
+            </div>
+                
+
+            }@empty {
+                @if (pageNo() == 0) {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">No Products Found!</p>
+                }@else {
+                    <p class="whitespace-nowrap text-start text-2xl medium:text-4xl mx-auto">You Have Reached The End</p>
+                }
+                
+            }
+
+            <div class="mt-6 flex gap-3">
+                <button (click)="prevPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Previous</button>
+                <button (click)="nextPage()" class="text-white rounded-2xl hover:bg-slate-600 bg-slate-700 p-3 w-24">Next</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>

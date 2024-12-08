@@ -302,17 +302,6 @@ export class UserDataService {
 
   }
 
-  checkPurchase(prodId: number){
-    return this.http.get<ProductDTO[]>(this.backendURL + "customer/checkpurchase/" +prodId,
-      {responseType: 'text' as 'json'}
-    )
-        .pipe(
-          catchError((error) => {
-            console.log(error);
-            return of(null);
-          })
-    )
-  }
   addToCart(item: CartSubmit){
     return this.http.post<string>(this.backendURL + "customer/addtocart", item,
       {responseType: 'text' as 'json'}
@@ -386,7 +375,18 @@ export class UserDataService {
   }
 
   getOrderList(pageNo: number, perPage: number){
-    return this.http.get<OrderDTO[]>(this.backendURL + "customer/getorder" + pageNo + "/" + perPage
+    return this.http.get<OrderDTO[]>(this.backendURL + "customer/getorder/" + pageNo + "/" + perPage
+    ).pipe(
+      catchError((error) => {
+        console.log(error);
+        return of(null);
+      })
+    );
+  }
+
+  checkPurchase(prodId: number){
+    return this.http.get<string>(this.backendURL + "customer/purchased/" + prodId,
+      {responseType: 'text' as 'json'}
     ).pipe(
       catchError((error) => {
         console.log(error);

@@ -47,7 +47,7 @@ export const routes: Routes = [
         canActivate: [loginGuard]
     },
     {
-        path: "order",
+        path: "orders",
         component: OrderPageComponent,
         canActivate: [loginGuard]
     },

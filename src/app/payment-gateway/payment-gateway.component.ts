@@ -84,23 +84,34 @@ export class PaymentGatewayComponent implements OnInit{
     if (this.validateData()){
 
 
+      this.userDataService.placeOrders(this.cartItems()).subscribe(
+        response =>{
+          if (response){
 
-      this.userDataService.clearCart().subscribe(resp =>{
-        if (resp){
+            this.userDataService.clearCart().subscribe(resp =>{
+              if (resp){
+    
+                this.activateToast("Success!!", true);
+                
+    
+                setTimeout(() => {
+                  this.router.navigate(['/home']);;
+                  }, this.toastDuration);
+    
+              }else{
+                this.activateToast("Failed!", false);
+                return;
+              }
+            });
+    
 
-          this.activateToast("Success!!", true);
-          
+          }else{
+            this.activateToast("Failed!", false);
+                return;
+          }
+        });
 
-          setTimeout(() => {
-            this.router.navigate(['/home']);;
-            }, this.toastDuration);
-
-        }else{
-          this.activateToast("Failed!", false);
-          return;
-        }
-      });
-
+        
     }
 
 

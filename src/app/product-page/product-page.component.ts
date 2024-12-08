@@ -106,7 +106,8 @@ export class ProductPageComponent implements OnInit{
   }
 
   toggleWriteReview(){
-
+    this.checkIfOrdered()
+    
     if (!this.purchased()){
       this.activateToast("You need to purchase the item before reviewing!", false);
       return;
@@ -413,6 +414,7 @@ export class ProductPageComponent implements OnInit{
   checkIfOrdered(){
     this.userService.checkPurchase(this.productId()).subscribe(response =>{
       if (response){
+        
         this.purchased.set(true);
       }else{
         this.purchased.set(false);
